@@ -1,24 +1,12 @@
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
 import Footer from "./footer";
 import Header from "./header";
-import ParticlesBackground from "../components/ParticlesBackground";
-import {Divider, List, ListItem, PaginationItem} from "@mui/material";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 //import {default as data} from './MOCK_DATA.json'
-import React, {Component, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Box from "@mui/material/Box";
 import usePagination from "./pagination";
 import {makeStyles} from "@material-ui/core/styles";
-import axios from "axios";
-import AdminService from "../services/admin.service";
-import {DataGrid} from '@mui/x-data-grid';
-import authHeader from "../services/auth-header";
-import {GridApi} from "@mui/x-data-grid";
+import {DataGrid, GridApi, GridCellValue, GridColDef} from '@mui/x-data-grid';
 import Button from "@mui/material/Button";
-import {GridColDef} from "@mui/x-data-grid";
-import {GridCellValue} from "@mui/x-data-grid";
 import RecommendationService from "../services/recommendation.service";
 
 const useStyles = makeStyles(() => ({
@@ -39,7 +27,6 @@ const columns = [
 export default function StatusRecommendations() {
     let [spage, setsPage] = useState(1);
     const [data, setData] = useState([]);
-    console.log("INSIDE ALL USERS COMPONENTS");
     var users = [];
     const columns: GridColDef[] = [
         {field: 'userID', headerName: 'ID'},
@@ -122,11 +109,9 @@ export default function StatusRecommendations() {
 
         <Box p="5">
             <Header/>
-            <ParticlesBackground/>
-
             <div style={{height: 700, width: '100%'}}>
                 <DataGrid
-                    style={{color:"black", backgroundColor:"white"}}
+                    style={{color: "black", backgroundColor: "white"}}
                     rows={data}
                     columns={columns}
                     pageSize={5}
@@ -192,8 +177,8 @@ export default function StatusRecommendations() {
                 onChange={handleChange}
             />*/}
             {/*<Footer />*/}
-            <Box sx={{ mt: 0, mb: 0}}>
-                <Footer />
+            <Box sx={{mt: 0, mb: 0}}>
+                <Footer/>
             </Box>
         </Box>
     );
