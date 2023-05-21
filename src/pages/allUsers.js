@@ -1,10 +1,10 @@
 import Footer from "./footer";
-import Header from "./header";
 import React, {useEffect, useState} from 'react';
 import Box from "@mui/material/Box";
 import AdminService from "../services/admin.service";
 import {DataGrid, GridApi, GridCellValue, GridColDef} from '@mui/x-data-grid';
 import Button from "@mui/material/Button";
+import {Sidebar} from "./components/Sidebar/Sidebar";
 
 export default function StatusRecommendations() {
     const [data, setData] = useState([]);
@@ -73,7 +73,7 @@ export default function StatusRecommendations() {
     return (
 
         <Box p="5">
-            <Header/>
+            <Sidebar/>
             <div style={{height: 700, width: '100%'}}>
                 <DataGrid
                     autoHeight={true}

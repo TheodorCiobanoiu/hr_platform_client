@@ -6,8 +6,8 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import {useNavigate} from "react-router-dom";
 import Footer from "./footer";
-import Header from "./header";
 import AuthService from "../services/auth.service";
+import {Sidebar} from "./components/Sidebar/Sidebar";
 
 
 const defaultValues = {
@@ -53,7 +53,7 @@ const AddAccount = () => {
 
     return (
         <div>
-            <Header/>
+            <Sidebar/>
             <br/>
             <div>
                 <Container

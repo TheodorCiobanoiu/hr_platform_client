@@ -3,16 +3,15 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Footer from "./footer";
-import Header from "./header";
 import AuthService from "../services/auth.service";
 import axios from "axios";
 import authHeader from "../services/auth-header";
+import {Sidebar} from "./components/Sidebar/Sidebar";
 
-const user = AuthService.getCurrentUser();
-const role = user.roles[0];
 
 export default function Content() {
-
+    const user = AuthService.getCurrentUser();
+    const role = user.roles[0];
     const handleTestButton = () => {
         axios.get("http://localhost:8082/pdf-generate/test-file/", {headers: authHeader(), responseType: 'blob'})
             .then((response) => {
@@ -22,7 +21,7 @@ export default function Content() {
 
     return (
         <div>
-            <Header/>
+            <Sidebar currentUser={user}/>
             <br/>
             <div>
                 <Box sx={{width: "30%", margin: "auto", color: "#b34454"}}>
@@ -37,7 +36,7 @@ export default function Content() {
                             }}
                             variant="outlined"
                             sx={{backgroundColor: 'white'}}
-                            href="/completeRecommendation"
+                            href="/recommendation/add"
                         >
                             Add recommendation
                         </Button>
@@ -67,7 +66,7 @@ export default function Content() {
                                 }}
                                 variant="outlined"
                                 sx={{backgroundColor: 'white'}}
-                                href="/viewRecommendations"
+                                href="/recommendations/all"
                             >
                                 See all recommendations
                             </Button>

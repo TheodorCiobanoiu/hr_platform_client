@@ -2,11 +2,11 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Footer from "./footer";
-import Header from "./header";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import {InputLabel} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import {Sidebar} from "./components/Sidebar/Sidebar";
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -16,7 +16,7 @@ const Profile = () => {
     };
     return (
         <div>
-            <Header/>
+            <Sidebar/>
             <br/>
             <div>
                 <Container

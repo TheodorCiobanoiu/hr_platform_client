@@ -5,9 +5,9 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Footer from "./footer";
-import Header from "./header";
 import QuestionService from "../services/question.service";
 import FormLabel from "@mui/material/FormLabel";
+import {Sidebar} from "./components/Sidebar/Sidebar";
 
 export default class AddQuestion extends Component {
     constructor(props) {
@@ -75,7 +75,7 @@ export default class AddQuestion extends Component {
     render() {
         return (
             <div>
-                <Header/>
+                <Sidebar/>
                 <br/>
                 <div className="container">
                     <Container

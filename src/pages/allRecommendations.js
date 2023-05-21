@@ -1,5 +1,4 @@
 import Footer from "./footer";
-import Header from "./header";
 import {Modal} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import Box from "@mui/material/Box";
@@ -8,6 +7,7 @@ import Button from "@mui/material/Button";
 
 import RecommendationService from "../services/recommendation.service";
 import ModalRecommendation from "./modalRecommendation";
+import {Sidebar} from "./components/Sidebar/Sidebar";
 
 const style = {
     position: "absolute",
@@ -80,27 +80,27 @@ export default function StatusRecommendations() {
 
     const handleStatusChange = async (e) => {
         const {name, value} = e.target;
-        let status = "";
+        let recommendationStatus='';
         switch (value) {
             case("Reviewed"):
-                status = 'Reviewed';
-                await RecommendationService.changeRecommendationStatus(currentRecommendation.id, status);
+                recommendationStatus = 'Reviewed';
+                await RecommendationService.changeRecommendationStatus(currentRecommendation.id, recommendationStatus);
                 break;
             case("In progress"):
-                status = 'In_Progress';
-                await RecommendationService.changeRecommendationStatus(currentRecommendation.id, status);
+                recommendationStatus = 'In_Progress';
+                await RecommendationService.changeRecommendationStatus(currentRecommendation.id, recommendationStatus);
                 break;
             case("Accepted"):
-                status = 'Accepted';
-                await RecommendationService.changeRecommendationStatus(currentRecommendation.id, status);
+                recommendationStatus = 'Accepted';
+                await RecommendationService.changeRecommendationStatus(currentRecommendation.id, recommendationStatus);
                 break;
             case("Rejected"):
-                status = 'Rejected';
-                await RecommendationService.changeRecommendationStatus(currentRecommendation.id, status);
+                recommendationStatus = 'Rejected';
+                await RecommendationService.changeRecommendationStatus(currentRecommendation.id, recommendationStatus);
                 break;
             default:
-                status = 'Reviewed';
-                await RecommendationService.changeRecommendationStatus(currentRecommendation.id, status);
+                recommendationStatus = 'Reviewed';
+                await RecommendationService.changeRecommendationStatus(currentRecommendation.id, recommendationStatus);
                 console.log("Status changed!");
         }
         await getData();
@@ -127,8 +127,7 @@ export default function StatusRecommendations() {
 
     return (
         <Box p="5">
-            <Header/>
-
+            <Sidebar/>
             <div style={{height: 700, width: "100%"}}>
                 <DataGrid
                     style={{color: "black", backgroundColor: "white"}}
