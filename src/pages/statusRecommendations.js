@@ -1,50 +1,17 @@
 import Footer from "./footer";
 import Header from "./header";
-//import {default as data} from './MOCK_DATA.json'
 import React, {useEffect, useState} from 'react';
 import Box from "@mui/material/Box";
-import usePagination from "./pagination";
-import {makeStyles} from "@material-ui/core/styles";
 import {DataGrid, GridApi, GridCellValue, GridColDef} from '@mui/x-data-grid';
 import Button from "@mui/material/Button";
 import RecommendationService from "../services/recommendation.service";
 
-const useStyles = makeStyles(() => ({
-    ul: {
-        "& .MuiPaginationItem-root": {
-            color: "white"
-        }
-    }
-}));
-
-const columns = [
-    {field: 'firstName', headerName: 'ID'},
-    {field: 'lastName', headerName: 'Username', width: 300},
-    {field: 'email', headerName: 'Email', width: 300},
-    {field: 'phone', headerName: ''}
-]
-
 export default function StatusRecommendations() {
-    let [spage, setsPage] = useState(1);
     const [data, setData] = useState([]);
-    var users = [];
     const columns: GridColDef[] = [
         {field: 'userID', headerName: 'ID'},
         {field: 'firstName', headerName: 'First Name'},
         {field: 'lastName', headerName: 'Last Name'},
-        // {
-        //     field: 'roles',
-        //     headerName: 'Role',
-        //     width: 180,
-        //     renderCell: params => (
-        //         <ul className="flex" >
-        //             {params.value.map((role, index) => (
-        //                 <li key={index}>{role.name}</li>
-        //             ))}
-        //         </ul>
-        //     ),
-        //     type: 'string'},
-        // {field: 'username', headerName: 'Username', width: 300},
         {field: 'email', headerName: 'Email', width: 300},
         {
             field: "action",
@@ -78,14 +45,6 @@ export default function StatusRecommendations() {
             console.log("Inside getData(): allData variable: ")
             console.log(allData);
             setData(allData);
-            // users = allData.slice();
-            // console.log(typeof users);
-            // users.forEach((user) => {
-            //     const newRole = user.roles[0].name;
-            //     user.role = newRole;
-            // });
-            // console.log(users);
-
         }).catch(error => console.error(error));
     };
     useEffect(() => {
@@ -93,18 +52,6 @@ export default function StatusRecommendations() {
         console.log("DATA OBJECT: ");
         console.log(data);
     }, []);
-
-    const PER_PAGE = 10;
-
-    const count = Math.ceil(data.length / PER_PAGE);
-    const _DATA = usePagination(data, PER_PAGE);
-
-    const handleChange = (e, p) => {
-        setsPage(p);
-        _DATA.jump(p);
-    };
-
-    const classes = useStyles();
     return (
 
         <Box p="5">
@@ -123,60 +70,6 @@ export default function StatusRecommendations() {
 
                 />
             </div>
-
-            {/*  <Pagination
-                classes={{ ul: classes.ul }}
-                renderItem={(item) => (
-                    <PaginationItem
-                        components={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
-                        {...item}
-                    />)}
-                count={count}
-                color="primary"
-                size="large"
-                page={spage}
-                variant="outlined"
-                shape="rounded"
-                defaultPage={1}
-                showFirstButton
-                showLastButton
-                onChange={handleChange}
-            />
-            <Box color="white">
-                <List p="10" pt="3" spacing={2} color>
-                    {_DATA.currentData().map(v => {
-                        return (
-                            <ListItem key={v.id} listStyleType="disc">
-                                <span>{v.sku}</span>{" "}
-                                <Divider display="inline" orientation="vertical" />
-                                <span> {v.category_type}</span>{" "}
-                                <Divider display="inline" orientation="vertical" />
-                                <span>
-              </span>
-                            </ListItem>
-                        );
-                    })}
-                </List>
-            </Box>
-            <Pagination
-                classes={{ ul: classes.ul }}
-                renderItem={(item) => (
-                    <PaginationItem
-                        components={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
-                        {...item}
-                    />)}
-                count={count}
-                color="primary"
-                size="large"
-                page={spage}
-                variant="outlined"
-                shape="rounded"
-                defaultPage={1}
-                showFirstButton
-                showLastButton
-                onChange={handleChange}
-            />*/}
-            {/*<Footer />*/}
             <Box sx={{mt: 0, mb: 0}}>
                 <Footer/>
             </Box>

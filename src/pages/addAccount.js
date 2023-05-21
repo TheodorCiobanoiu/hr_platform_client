@@ -2,17 +2,14 @@ import React, {useState} from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
-import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
 import {useNavigate} from "react-router-dom";
 import Footer from "./footer";
 import Header from "./header";
-import ParticlesBackground from "../components/ParticlesBackground";
 import AuthService from "../services/auth.service";
-import authHeader from "../services/auth-header";
-import axios from "axios";
-//const settings = ["Profile", "Logout"];
-//const today = Date.getFullYear() + "-" + Date.getMonth() + "-" + Date.getDate();
+
+
 const defaultValues = {
     firstName: "",
     lastName: "",
@@ -21,7 +18,6 @@ const defaultValues = {
     phone: "",
     password: "",
 };
-
 const AddAccount = () => {
     const [formValues, setFormValues] = useState(defaultValues);
     const handleInputChange = (e) => {
@@ -32,7 +28,7 @@ const AddAccount = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = () => {
         //e.preventDefault();
         let apiResponse;
         AuthService.register(
@@ -58,7 +54,6 @@ const AddAccount = () => {
     return (
         <div>
             <Header/>
-            {/*<ParticlesBackground/>*/}
             <br/>
             <div>
                 <Container
@@ -78,7 +73,7 @@ const AddAccount = () => {
                             <Grid
                                 container
                                 alignItems="center"
-                                justify="center"
+                                justifyContent="center"
                                 direction="column"
                             >
                                 <Grid item>

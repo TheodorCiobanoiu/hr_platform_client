@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 
 const CreateQuestion = () => {
     const [questions, getQuestions] = useState([]);
     const fetchData = () => {
-        axios.get("http://localhost:8082/question/all").then(response => {
+        axios.get("http://localhost:8082/api/question/all").then(response => {
             getQuestions(response.data)
         })
     }
@@ -13,7 +13,7 @@ const CreateQuestion = () => {
         fetchData()
     }, [])
 
-    return(
+    return (
         <div>
             {questions.length > 0 && (
                 <ul>

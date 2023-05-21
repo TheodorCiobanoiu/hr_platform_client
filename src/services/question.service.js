@@ -4,7 +4,7 @@ import authHeader from "./auth-header";
 class QuestionService {
     addQuestion(type, questionBody, possibleAnswer1, possibleAnswer2, possibleAnswer3, possibleAnswer4) {
         return axios
-            .post("http://localhost:8082/question/add", {
+            .post("http://localhost:8082/api/question/add", {
                 type,
                 questionBody,
                 possibleAnswer1,

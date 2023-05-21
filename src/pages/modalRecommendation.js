@@ -1,23 +1,16 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import Button from "@mui/material/Button";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import axios from "axios";
 
-import {InputLabel} from "@material-ui/core";
-import {DataGrid} from "@mui/x-data-grid";
-import AuthService from "../services/auth.service";
+import {InputLabel, Step, StepLabel, Stepper} from "@mui/material";
 import authHeader from "../services/auth-header";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Card from "@mui/material/Card";
-import {Step, StepLabel, Stepper} from "@mui/material";
-import RecommendationService from "../services/recommendation.service";
-import Datepicker from "react-datepicker";
 
 const steps = [
     'Not Reviewed',
@@ -32,7 +25,6 @@ export default function ModalRecommendation(props) {
     console.log(props.pathName);
     let answers = props.recommendation.answerDTOS;
     console.log(answers);
-    let id = props.recommendation.userId;
     let candidateFirstName = props.recommendation.candidateFirstName;
     let candidateLastName = props.recommendation.candidateLastName;
     let candidateEmail = props.recommendation.candidateEmail;
@@ -64,16 +56,9 @@ export default function ModalRecommendation(props) {
     };
 
 
-
-
     return (
-        /*     <div>
-          <InputLabel>First Name:</InputLabel>
-          <InputLabel>{nume}</InputLabel>
-        </div> */
-
         <div style={{marginTop: "30px"}}>
-            <Box sx={{width: "100%", marginBottom:"30px"}}>
+            <Box sx={{width: "100%", marginBottom: "30px"}}>
                 <Stepper activeStep={getActiveStep()} alternativeLabel>
                     {steps.map((label) => (
                         <Step key={label}>
@@ -120,11 +105,9 @@ export default function ModalRecommendation(props) {
                 <Grid item xs={3}/>
                 <br/>
                 <br/>
-
-
                 {answers.map((answer) => (
                     <Grid item xs={4}>
-                        <Card sx={{maxWidth: 400, minHeight:250}}
+                        <Card sx={{maxWidth: 400, minHeight: 250}}
                               style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
                             <CardContent>
                                 <Typography
@@ -147,13 +130,8 @@ export default function ModalRecommendation(props) {
                     </Grid>
 
                 ))}
-
-                {/*<Grid item xs={3}>*/}
-                {/*    <InputLabel>{progressStatus} </InputLabel>*/}
-                {/*</Grid>*/}
                 <br/>
                 <br/>
-
                 <Grid item xs={4}/>
                 <Grid item xs={4}>
                     <Button
@@ -181,60 +159,36 @@ export default function ModalRecommendation(props) {
 
                 <Grid item xs={4}/>
                 <Grid item xs={4}>
-                    {/*<Button*/}
-                    {/*    style={{*/}
-                    {/*        borderRadius: 35,*/}
-                    {/*        padding: "18px 36px",*/}
-                    {/*        fontSize: "18px",*/}
-                    {/*        color: "black",*/}
-                    {/*        borderWidth: 4,*/}
-                    {/*    }}*/}
-                    {/*    variant="outlined"*/}
-                    {/*    sx={{backgroundColor: "white", height: 40}}*/}
-                    {/*    color="primary"*/}
-                    {/*    type="submit"*/}
-                    {/*>*/}
-                    {/*    Set status*/}
-                    {/*</Button>*/}
                     {props.pathName !== "/yourRecommendation" && (
-                    <TextField
-                        id="filled-select-answer"
-                        select
-                        label="Change status"
-                        //value={currency}
-                        // Vespi: aici la value CRED ca trebuie sa faca legatura cu answer(gen sa fie answerBody)
-                        onChange={(e) => props.handleInputChange(e)}
-                        variant="filled"
-                        fullWidth={true}
-                        name="Change status"
-                    >
-                        <MenuItem value="Reviewed">
-                            Reviewed
-                        </MenuItem>
+                        <TextField
+                            id="filled-select-answer"
+                            select
+                            label="Change status"
+                            onChange={(e) => props.handleInputChange(e)}
+                            variant="filled"
+                            fullWidth={true}
+                            name="Change status"
+                        >
+                            <MenuItem value="Reviewed">
+                                Reviewed
+                            </MenuItem>
 
-                        <MenuItem value="In progress">
-                            In progress
-                        </MenuItem>
+                            <MenuItem value="In progress">
+                                In progress
+                            </MenuItem>
 
-                        <MenuItem value="Accepted">
-                            Accepted
-                        </MenuItem>
+                            <MenuItem value="Accepted">
+                                Accepted
+                            </MenuItem>
 
-                        <MenuItem value="Rejected">
-                            Rejected
-                        </MenuItem>
+                            <MenuItem value="Rejected">
+                                Rejected
+                            </MenuItem>
 
-                    </TextField>
+                        </TextField>
                     )}
                 </Grid>
                 <Grid item xs={4}/>
-
-                {/*<Datepicker*/}
-                {/*    dateFormat="dd/MM/yyyy"*/}
-                {/*    selected={field.value}*/}
-                {/*    onChange={setDateTime}*/}
-                {/*/>*/}
-                {/*<br/>*/}
             </Grid>
 
             <br/>

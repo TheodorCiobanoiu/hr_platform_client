@@ -9,7 +9,7 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { menuItems } from "./menuItems";
+import {menuItems} from "./menuItems";
 import AuthService from "../services/auth.service";
 
 
@@ -26,20 +26,9 @@ function Header() {
         setAnchorElUser(null);
     };
 
-    // let navigate = useNavigate();
-
-    /* const handleLogout = () =>{
-          let path = "/login";
-          navigate(path);
-      };
-      const handleViewProfile = () =>{
-          let path = "/myProfile";
-          navigate(path);
-      };*/
-
     return (
         <div>
-            <AppBar position="static" sx={{ bgcolor: "#2004df" }}>
+            <AppBar position="static" sx={{bgcolor: "#2004df"}}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         <Typography
@@ -49,7 +38,7 @@ function Header() {
                             href="/content"
                             sx={{
                                 mr: 2,
-                                display: { xs: "none", md: "flex" },
+                                display: {xs: "none", md: "flex"},
                                 fontFamily: "monospace",
                                 fontWeight: 700,
                                 letterSpacing: ".3rem",
@@ -61,18 +50,19 @@ function Header() {
                         </Typography>
 
                         <Box
-                            sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, mr: 1 }}
+                            sx={{flexGrow: 1, display: {xs: "none", md: "flex"}, mr: 1}}
                         ></Box>
 
-                        <Box sx={{ flexGrow: 0 }}>
+                        <Box sx={{flexGrow: 0}}>
                             WELCOME {user.username} &nbsp;&nbsp;
                             <Tooltip title="Open settings">
-                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Remy Sharp" src="https://i.imgur.com/Crdz2qO_d.webp?maxwidth=760&fidelity=grand" />
+                                <IconButton onClick={handleOpenUserMenu} sx={{p: 0}} size="large">
+                                    <Avatar alt="Remy Sharp"
+                                            src="https://i.imgur.com/Crdz2qO_d.webp?maxwidth=760&fidelity=grand"/>
                                 </IconButton>
                             </Tooltip>
                             <Menu
-                                sx={{ mt: "45px" }}
+                                sx={{mt: "45px"}}
                                 id="menu-appbar"
                                 anchorEl={anchorElUser}
                                 anchorOrigin={{

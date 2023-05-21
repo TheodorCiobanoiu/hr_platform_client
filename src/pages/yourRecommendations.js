@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {makeStyles} from "@material-ui/core/styles";
 import {DataGrid, GridApi, GridCellValue, GridColDef} from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import RecommendationService from "../services/recommendation.service";
 import Header from "./header";
-import ParticlesBackground from "../components/ParticlesBackground";
 import {Modal} from "@mui/material";
 import Box from "@mui/material/Box";
 import Footer from "./footer";
@@ -15,22 +13,13 @@ const modalStyles = {
     overflow: 'scroll',
     height: '100%',
     display: 'flex',
-    flexDirection:'row'
+    flexDirection: 'row'
 };
 
 
 function YourRecommendations() {
 
     const user = AuthService.getCurrentUser();
-
-    const useStyles = makeStyles(() => ({
-        ul: {
-            "& .MuiPaginationItem-root": {
-                color: "white"
-            }
-        }
-    }));
-
     const style = {
         position: 'absolute',
         top: '50%',
@@ -108,7 +97,6 @@ function YourRecommendations() {
     return (
         <Box p="5">
             <Header/>
-            <ParticlesBackground/>
 
             <div style={{height: 700, width: '100%'}}>
                 <DataGrid
@@ -130,14 +118,15 @@ function YourRecommendations() {
                     aria-describedby="parent-modal-description"
                     style={modalStyles}
                 >
-                    <Box sx={{...style, width: '80%', marginTop:"320px"}}>
+                    <Box sx={{...style, width: '80%', marginTop: "320px"}}>
                         <h2 id="parent-modal-title">
                             Recommendation #{currentRecommendation.id}:{" "}
                             {currentRecommendation.candidateFirstName}{" "}
                             {currentRecommendation.candidateLastName}{" "}
                         </h2>
                         <div id="parent-modal-description">
-                            <ModalRecommendation recommendation={currentRecommendation} pathName={window.location.pathname}/>
+                            <ModalRecommendation recommendation={currentRecommendation}
+                                                 pathName={window.location.pathname}/>
                         </div>
                     </Box>
                 </Modal>

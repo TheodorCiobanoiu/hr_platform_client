@@ -3,17 +3,15 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
-import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
-import FormLabel from "@material-ui/core/FormLabel";
-import {InputLabel} from "@material-ui/core";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import FormLabel from "@mui/material/FormLabel";
+import {InputLabel} from "@mui/material";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import {useNavigate} from "react-router-dom";
 import Footer from "./footer";
 import Header from "./header";
-import ParticlesBackground from "../components/ParticlesBackground";
 import axios from "axios";
 import authHeader from "../services/auth-header";
 import MenuItem from "@mui/material/MenuItem";
@@ -32,24 +30,13 @@ const MAIL_SUBJECT = "A new recommendation has been submitted";
 const MAIL_TEXT = "There is a new recommendation submitted by " + user.username + ". Go check it out!";
 
 function AddRecommendation() {
-    const defaultValues = {
-        userId: "",
-        candidateFirstName: "",
-        candidateLastName: "",
-        candidateEmail: "",
-        candidatePhoneNumber: "",
-        progressStatus: "Not_Reviewed",
-        cvFileId: "",
-        answers: [],
-    };
 
     const [questions, setQuestions] = useState(null);
     const fetchData = () => {
         return axios
-            .get("http://localhost:8082/question/all", {headers: authHeader()})
+            .get("http://localhost:8082/api/question/all", {headers: authHeader()})
             .then((response) => setQuestions(response.data));
     };
-
     useEffect(() => {
         fetchData();
     }, []);
@@ -69,8 +56,6 @@ function AddRecommendation() {
         candidatePhoneNumber: Yup.string().min(10).required("Adaugati un numar de telefon pentru candidat.")
     });
 
-    const [formValues, setFormValues] = useState(defaultValues);
-    const [myResponse, setMyResponse] = useState({});
     const handleSubmit = async (values) => {
         const allAnswers = [];
         questions.forEach((question) => {
@@ -100,16 +85,12 @@ function AddRecommendation() {
         console.log("GIVEN ANSWERS");
         console.log(allAnswers);
 
-        // Create an object of formData
         const formData = new FormData();
-        // Update the formData object
         await formData.append("file", state.selectedFile, state.selectedFile.name);
-        let axiosFileResponse = {}
-        // Details of the uploaded file
         console.log(state.selectedFile);
         const user = JSON.parse(localStorage.getItem("user"));
         let recommendationFileId = 0;
-         axios.post("http://localhost:8082/file/uploadFile", formData, {
+        axios.post("http://localhost:8082/file/uploadFile", formData, {
             headers: {
                 Authorization: "Bearer " + user.token,
                 "Content-Type": "multipart/form-data",
@@ -119,48 +100,34 @@ function AddRecommendation() {
             console.log("AXIOS FILE RESPONSE");
             console.log(response.data);
             recommendationFileId = response.data.fileId;
-             console.log(recommendationFileId);
-             const formVal = {
-                     userId: user.id,
-                     candidateFirstName: values.candidateFirstName,
-                     candidateLastName: values.candidateLastName,
-                     candidateEmail: values.candidateEmail,
-                     candidatePhoneNumber: values.candidatePhoneNumber,
-                     progressStatus: "Not_Reviewed",
-                     cvFileId: recommendationFileId,
-                     answers: allAnswers,
-                 }
+            console.log(recommendationFileId);
+            const formVal = {
+                userId: user.id,
+                candidateFirstName: values.candidateFirstName,
+                candidateLastName: values.candidateLastName,
+                candidateEmail: values.candidateEmail,
+                candidatePhoneNumber: values.candidatePhoneNumber,
+                progressStatus: "Not_Reviewed",
+                cvFileId: recommendationFileId,
+                answers: allAnswers,
+            }
 
-             console.log("FINAL FORM VALUES ");
+            console.log("FINAL FORM VALUES ");
 
 
-             await RecommendationService.addRecommendation(formVal).then((response) => {
-                 console.log(response);
-             });
-             MailService.sendMail(MAIL_RECEIVER, MAIL_SUBJECT, MAIL_TEXT);
+            await RecommendationService.addRecommendation(formVal).then((response) => {
+                console.log(response);
+            });
+            MailService.sendMail(MAIL_RECEIVER, MAIL_SUBJECT, MAIL_TEXT);
             navigate("/content");
         });
-
-        // console.log("Event object on handleSubmit")
-        // console.log(event);
-        // console.log(formValues);
     };
-
     const [value, setValue] = React.useState();
-    //
-    // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //   this.setValue({[event.target.name]: event.target.value})
-    // };
     const navigate = useNavigate();
-
-    //**************UPLOAD/DONWLOAD STUFF
-
     const state = {
         // Initially, no file is selected
         selectedFile: null,
     };
-
-    // On file select (from the pop up)
     const onFileChange = (event) => {
         // Update the state
         state.selectedFile = event.target.files[0];
@@ -192,26 +159,26 @@ function AddRecommendation() {
     //     }).then((response) => {
     //         console.log(response);
     //     });
-        /* axios.post('http://localhost:8082/mail/sendMail',
-            {
-              to:'theodor.ciobanoiu@gmail.com',
-              subject:'Acesta este un test de mail',
-              text:'Dupa cum spune si titlul, acesta este doar un test :)'
-            }, {headers: authHeader()});
-     */
-        // Request made to the backend api
-        // Send formData object
-        //axios.post("api/uploadfile", formData);
+    /* axios.post('http://localhost:8082/mail/sendMail',
+        {
+          to:'theodor.ciobanoiu@gmail.com',
+          subject:'Acesta este un test de mail',
+          text:'Dupa cum spune si titlul, acesta este doar un test :)'
+        }, {headers: authHeader()});
+ */
+    // Request made to the backend api
+    // Send formData object
+    //axios.post("api/uploadfile", formData);
     // };
     //**************UPLOAD/DOWNLOAD STUFF
 
-    const onSubmitForm= () =>{};
+    const onSubmitForm = () => {
+    };
 
     return (
         <div>
             <Header/>
             <br/>
-            {/*<ParticlesBackground />*/}
             <div>
                 <Container
                     maxWidth="sm"

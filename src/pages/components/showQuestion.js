@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
-
 
 
 const ShowQuestion = () => {
     const [questions, setQuestions] = useState([]);
     const fetchData = () => {
-        axios.get("http://localhost:8082/question/all", {crossDomain: true}).then(response => {
+        axios.get("http://localhost:8082/api/question/all", {crossDomain: true}).then(response => {
             setQuestions(response.data)
             console.log(response.data)
         }).catch(err => console.log(err))
@@ -17,7 +16,7 @@ const ShowQuestion = () => {
         fetchData()
     }, [])
 
-    return(
+    return (
         <div>
             {questions.length > 0 && (
                 <ul>

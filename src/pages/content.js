@@ -10,6 +10,7 @@ import authHeader from "../services/auth-header";
 
 const user = AuthService.getCurrentUser();
 const role = user.roles[0];
+
 export default function Content() {
 
     const handleTestButton = () => {

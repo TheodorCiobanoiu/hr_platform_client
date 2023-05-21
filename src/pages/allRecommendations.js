@@ -1,32 +1,13 @@
 import Footer from "./footer";
 import Header from "./header";
-import ParticlesBackground from "../components/ParticlesBackground";
-import {Divider, List, ListItem, Modal, PaginationItem} from "@mui/material";
-import React, {Component, useEffect, useState} from "react";
+import {Modal} from "@mui/material";
+import React, {useEffect, useState} from "react";
 import Box from "@mui/material/Box";
-import usePagination from "./pagination";
-
-import {makeStyles} from "@material-ui/core/styles";
-import axios from "axios";
-import AdminService from "../services/admin.service";
-import {DataGrid} from "@mui/x-data-grid";
-import authHeader from "../services/auth-header";
-import {GridApi} from "@mui/x-data-grid";
+import {DataGrid, GridApi, GridCellValue, GridColDef} from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
-import {GridColDef} from "@mui/x-data-grid";
-import {GridCellValue} from "@mui/x-data-grid";
 
 import RecommendationService from "../services/recommendation.service";
-import UsersService from "../services/users.service";
 import ModalRecommendation from "./modalRecommendation";
-
-const useStyles = makeStyles(() => ({
-    ul: {
-        "& .MuiPaginationItem-root": {
-            color: "white",
-        },
-    },
-}));
 
 const style = {
     position: "absolute",
@@ -46,16 +27,8 @@ const modalStyles = {
     overflow: 'scroll',
     height: '100%',
     display: 'flex',
-    flexDirection:'row'
+    flexDirection: 'row'
 };
-
-const columns = [
-    {field: "firstName", headerName: "ID"},
-    {field: "lastName", headerName: "Username", width: 300},
-    {field: "email", headerName: "Email", width: 300},
-    {field: "phone", headerName: ""},
-];
-
 export default function StatusRecommendations() {
     let [recommendation, setRecommendation] = useState([]);
     let [open, setOpen] = useState(false);
@@ -108,7 +81,7 @@ export default function StatusRecommendations() {
     const handleStatusChange = async (e) => {
         const {name, value} = e.target;
         let status = "";
-        switch(value){
+        switch (value) {
             case("Reviewed"):
                 status = 'Reviewed';
                 await RecommendationService.changeRecommendationStatus(currentRecommendation.id, status);
@@ -152,11 +125,9 @@ export default function StatusRecommendations() {
         console.log(recommendation);
     }, []);
 
-    const classes = useStyles();
     return (
         <Box p="5">
             <Header/>
-            <ParticlesBackground/>
 
             <div style={{height: 700, width: "100%"}}>
                 <DataGrid
@@ -178,14 +149,15 @@ export default function StatusRecommendations() {
                     aria-describedby="parent-modal-description"
                 >
 
-                    <Box sx={{...style, width: "80%", marginTop:"320px"}}>
+                    <Box sx={{...style, width: "80%", marginTop: "320px"}}>
                         <h2 id="parent-modal-title">
                             Recommendation #{currentRecommendation.id}:{" "}
                             {currentRecommendation.candidateFirstName}{" "}
                             {currentRecommendation.candidateLastName}{" "}
                         </h2>
                         <div id="parent-modal-description">
-                            <ModalRecommendation recommendation={currentRecommendation} getData={getData} handleInputChange={handleStatusChange} />
+                            <ModalRecommendation recommendation={currentRecommendation} getData={getData}
+                                                 handleInputChange={handleStatusChange}/>
                         </div>
                     </Box>
                 </Modal>
