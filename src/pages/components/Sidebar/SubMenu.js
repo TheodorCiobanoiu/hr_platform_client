@@ -67,7 +67,7 @@ export const SubMenu = ({item}) => {
             {subnav &&
                 item.subNav.map((item, index) => {
                     return (
-                        (item.alwaysVisible || (item.visibility === user.roles[0])) &&
+                        (item.alwaysVisible || (item.visibility === user.roles[0]) || user.roles[0] === "ROLE_ADMIN") &&
                         <DropdownLink to={item.path} key={index}>
                             {item.icon}
                             <SidebarLabel>{item.title}</SidebarLabel>

@@ -52,7 +52,7 @@ export const SidebarData = [
                 title: 'See all recommendations',
                 path: '/recommendations/all',
                 icon: <FaIcons.FaUsers/>,
-                visibility: 'ROLE_ADMIN'
+                visibility: 'ROLE_HR'
             },
             {
                 title: 'Recommend someone',
