@@ -1,6 +1,5 @@
 import axios from "axios";
 import authHeader from "./auth-header";
-import * as React from "react";
 
 const API_URL = "http://localhost:8082/api/auth/";
 // const API_URL_CHECK_TOKEN = "http://localhost:8082/admin/check-token/";

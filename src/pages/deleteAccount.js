@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import {useNavigate} from "react-router-dom";
-import Footer from "./footer";
+import Footer from "./components/footer";
 import AdminService from "../services/admin.service";
 import {Sidebar} from "./components/Sidebar/Sidebar";
 

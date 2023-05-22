@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import RecommendationService from "../services/recommendation.service";
 import {Modal} from "@mui/material";
 import Box from "@mui/material/Box";
-import Footer from "./footer";
+import Footer from "./components/footer";
 import AuthService from "../services/auth.service";
 import ModalRecommendation from "./modalRecommendation";
 import {Sidebar} from "./components/Sidebar/Sidebar";

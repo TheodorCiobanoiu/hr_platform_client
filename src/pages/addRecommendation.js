@@ -10,7 +10,7 @@ import {InputLabel} from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import {useNavigate} from "react-router-dom";
-import Footer from "./footer";
+import Footer from "./components/footer";
 import axios from "axios";
 import authHeader from "../services/auth-header";
 import MenuItem from "@mui/material/MenuItem";

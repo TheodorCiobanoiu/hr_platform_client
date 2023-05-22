@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import React from "react";
 import Box from "@mui/material/Box";
 import {useNavigate} from "react-router-dom";
-import Footer from "./footer";
+import Footer from "./components/footer";
 import Stack from "@mui/material/Stack";
 import {Sidebar} from "./components/Sidebar/Sidebar";
 //const settings = ["Profile", "Logout"];

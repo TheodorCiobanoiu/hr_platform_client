@@ -1,4 +1,4 @@
-import Footer from "./footer";
+import Footer from "./components/footer";
 import {Modal} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import Box from "@mui/material/Box";

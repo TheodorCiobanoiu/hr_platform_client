@@ -2,7 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import Footer from "./footer";
+import Footer from "./components/footer";
 import AuthService from "../services/auth.service";
 import axios from "axios";
 import authHeader from "../services/auth-header";

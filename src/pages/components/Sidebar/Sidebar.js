@@ -128,7 +128,11 @@ export const Sidebar = () => {
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
-                            <MenuItem onClick={handleClose}>Profile</MenuItem>
+                            <MenuItem>
+                                <Link to={"/profile"} style={{textDecoration: "none", color: "inherit"}}>
+                                    Profile
+                                </Link>
+                            </MenuItem>
                             <MenuItem>
                                 <Link to={"/login"} style={{textDecoration: "none", color: "inherit"}}>
                                     Logout
