@@ -10,6 +10,7 @@ export const SidebarData = [
         title: 'Overview',
         path: '/overview',
         icon: <AiIcons.AiFillHome/>,
+        alwaysVisible: true
     },
     {
         title: 'Requests',
@@ -17,6 +18,7 @@ export const SidebarData = [
         icon: <IoIcons.IoIosPaper/>,
         iconClosed: <RiIcons.RiArrowDownSFill/>,
         iconOpened: <RiIcons.RiArrowUpSFill/>,
+        alwaysVisible: true,
         subNav: [
             {
                 title: 'See all requests',
@@ -44,6 +46,7 @@ export const SidebarData = [
         icon: <FaIcons.FaUser/>,
         iconClosed: <RiIcons.RiArrowDownSFill/>,
         iconOpened: <RiIcons.RiArrowUpSFill/>,
+        alwaysVisible: true,
         subNav: [
             {
                 title: 'See all recommendations',
@@ -71,6 +74,7 @@ export const SidebarData = [
         icon: <FaIcons.FaUserShield/>,
         iconClosed: <RiIcons.RiArrowDownSFill/>,
         iconOpened: <RiIcons.RiArrowUpSFill/>,
+        alwaysVisible: false,
         visibility: "ROLE_ADMIN",
         subNav: [
             {

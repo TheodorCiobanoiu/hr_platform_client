@@ -5,6 +5,7 @@ import * as AiIcons from 'react-icons/ai'
 import {Link} from "react-router-dom";
 import {SidebarData} from "./SidebarData";
 import {SubMenu} from "./SubMenu";
+import AuthService from "../../../services/auth.service";
 
 const Nav = styled.div`
   background: #15171c;
@@ -39,9 +40,10 @@ const SidebarNav = styled.nav`
 const SidebarWrap = styled.div`
   width: 100%;
 `;
-export const Sidebar = ({currentUser}) => {
+export const Sidebar = () => {
 
     const [sidebar, setSidebar] = useState(false);
+    const user = AuthService.getCurrentUser();
 
     const showSidebar = () => {
         setSidebar(!sidebar);
@@ -61,7 +63,10 @@ export const Sidebar = ({currentUser}) => {
                     </NavIcon>
                 </SidebarWrap>
                 {SidebarData.map((item, index) => {
-                    return <SubMenu item={item} key={index} currentUser={currentUser}/>
+                    return (
+                        (item.alwaysVisible || (item.visibility === user.roles[0])) &&
+                        <SubMenu item={item} key={index}/>
+                    );
                 })}
             </SidebarNav>
         </>

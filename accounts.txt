@@ -1,0 +1,9 @@
+1. ADMIN
+    username: theoCiobanoiu
+    password: &Teoviorel01
+2.HR
+    username: hr_user
+    password: &Teoviorel01
+3. USER
+    username: normal_user
+    password: &Teoviorel01
