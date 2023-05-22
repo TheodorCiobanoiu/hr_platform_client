@@ -1,5 +1,6 @@
 import axios from "axios";
 import authHeader from "./auth-header";
+import * as React from "react";
 
 const API_URL = "http://localhost:8082/api/auth/";
 
@@ -10,9 +11,10 @@ class AuthService {
                 username,
                 password
             })
-            .then(response => {
+            .then(async (response) => {
                 if (response.data.token) {
-                    localStorage.setItem("user", JSON.stringify(response.data));
+                    await localStorage.setItem("user", JSON.stringify(response.data));
+                    console.log("User added to local storage");
                 }
 
                 return response.data;
@@ -48,6 +50,14 @@ class AuthService {
         }
         return JSON.parse(localStorage.getItem('user'));
     }
+
+    checkForUser() {
+        const user = this.getCurrentUser();
+        console.log(user);
+        console.log(user.token.length === 0);
+        return (user.token.length === 0);
+    }
+
 }
 
 export default new AuthService();

@@ -7,11 +7,21 @@ import AuthService from "../services/auth.service";
 import axios from "axios";
 import authHeader from "../services/auth-header";
 import {Sidebar} from "./components/Sidebar/Sidebar";
+import {useNavigate} from "react-router-dom";
 
 
 export default function Content() {
     const user = AuthService.getCurrentUser();
     const role = user.roles[0];
+    const navigate = useNavigate();
+    React.useEffect(() => {
+        const noUserPresent = AuthService.checkForUser();
+        if (noUserPresent) {
+            console.log("No user found inside local storage, navigating to /login");
+            navigate('/login');
+        }
+    }, []);
+
     const handleTestButton = () => {
         axios.get("http://localhost:8082/pdf-generate/test-file/", {headers: authHeader(), responseType: 'blob'})
             .then((response) => {
@@ -21,7 +31,7 @@ export default function Content() {
 
     return (
         <div>
-            <Sidebar currentUser={user}/>
+            <Sidebar/>
             <br/>
             <div>
                 <Box sx={{width: "30%", margin: "auto", color: "#b34454"}}>
