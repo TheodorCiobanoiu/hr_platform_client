@@ -8,10 +8,10 @@ import AdminControl from "./pages/adminControl";
 import AddAccount from "./pages/addAccount";
 import DeleteAccount from "./pages/deleteAccount";
 import Profile from "./pages/profile";
-import Logout from "./pages/logout";
 import AddQuestion from "./pages/addQuestion";
 import AllUsers from "./pages/allUsers";
 import YourRecommendations from "./pages/yourRecommendations";
+import {Overview} from "./pages/Overview";
 
 function App() {
     return (
@@ -19,6 +19,7 @@ function App() {
             <Routes>
                 <Route path="*" element={<Navigate to={"/login"}/>}></Route>
                 <Route path="/login" element={<Login/>}></Route>
+                <Route path="/overview" element={<Overview/>}></Route>
                 <Route path="/content" element={<Content/>}></Route>
                 <Route path="/recommendations/add" element={<AddRecommendation/>}></Route>
                 <Route path="/recommendations/all" element={<AllRecommendation/>}></Route>
@@ -29,7 +30,6 @@ function App() {
                 <Route path="/profile" element={<Profile/>}></Route>
                 <Route path="/addQuestion" element={<AddQuestion/>}></Route>
                 <Route path="/admin/users-all" element={<AllUsers/>}></Route>
-                <Route path="/logout" element={<Logout/>}></Route>
             </Routes>
         </BrowserRouter>
     );
