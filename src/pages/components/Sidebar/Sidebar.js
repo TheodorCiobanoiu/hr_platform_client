@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import styled from "styled-components";
 import * as FaIcons from 'react-icons/fa'
 import * as AiIcons from 'react-icons/ai'
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {SidebarData} from "./SidebarData";
 import {SubMenu} from "./SubMenu";
 import AuthService from "../../../services/auth.service";
@@ -75,7 +75,14 @@ export const Sidebar = () => {
     const [sidebar, setSidebar] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const user = AuthService.getCurrentUser();
-
+    const navigate = useNavigate();
+    React.useEffect(() => {
+        const noUserPresent = AuthService.checkForUser();
+        if (noUserPresent) {
+            console.log("No user found inside local storage, navigating to /login");
+            navigate('/login');
+        }
+    }, []);
     const showSidebar = () => {
         setSidebar(!sidebar);
     }
