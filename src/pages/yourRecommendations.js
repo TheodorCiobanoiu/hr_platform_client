@@ -2,12 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {DataGrid, GridApi, GridCellValue, GridColDef} from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import RecommendationService from "../services/recommendation.service";
-import Header from "./header";
 import {Modal} from "@mui/material";
 import Box from "@mui/material/Box";
-import Footer from "./footer";
+import Footer from "./components/footer";
 import AuthService from "../services/auth.service";
 import ModalRecommendation from "./modalRecommendation";
+import {Sidebar} from "./components/Sidebar/Sidebar";
 
 const modalStyles = {
     overflow: 'scroll',
@@ -96,7 +96,7 @@ function YourRecommendations() {
     }, []);
     return (
         <Box p="5">
-            <Header/>
+            <Sidebar/>
 
             <div style={{height: 700, width: '100%'}}>
                 <DataGrid

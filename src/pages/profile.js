@@ -1,22 +1,15 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Footer from "./footer";
-import Header from "./header";
+import Footer from "./components/footer";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import {InputLabel} from "@mui/material";
-import {useNavigate} from "react-router-dom";
+import {Sidebar} from "./components/Sidebar/Sidebar";
 
 const Profile = () => {
-    const navigate = useNavigate();
-    const handleBackToContent = () => {
-        let path = "/content";
-        navigate(path);
-    };
     return (
         <div>
-            <Header/>
+            <Sidebar/>
             <br/>
             <div>
                 <Container
@@ -89,20 +82,6 @@ const Profile = () => {
                     justifyContent="flex-end"
                     alignItems="flex-end"
                 >
-                    <Button
-                        style={{
-                            borderRadius: 35,
-                            padding: "18px 36px",
-                            fontSize: "18px",
-                            color: "black",
-                            borderWidth: 4,
-                        }}
-                        variant="outlined"
-                        sx={{backgroundColor: "white", height: 40}}
-                        onClick={handleBackToContent}
-                    >
-                        Go back
-                    </Button>
                 </Box>
             </div>
             <Footer/>

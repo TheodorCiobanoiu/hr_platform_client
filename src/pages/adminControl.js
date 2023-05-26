@@ -3,9 +3,9 @@ import Button from "@mui/material/Button";
 import React from "react";
 import Box from "@mui/material/Box";
 import {useNavigate} from "react-router-dom";
-import Footer from "./footer";
-import Header from "./header";
+import Footer from "./components/footer";
 import Stack from "@mui/material/Stack";
+import {Sidebar} from "./components/Sidebar/Sidebar";
 //const settings = ["Profile", "Logout"];
 //const today = Date.getFullYear() + "-" + Date.getMonth() + "-" + Date.getDate();
 /*const defaultValues = {
@@ -21,7 +21,7 @@ export default function Login() {
 
     return (
         <div>
-            <Header/>
+            <Sidebar/>
             <br/>
             <div>
                 <Box sx={{width: "30%", margin: "auto"}}>
@@ -36,7 +36,7 @@ export default function Login() {
                             }}
                             variant="outlined"
                             sx={{backgroundColor: "white"}}
-                            href="/addAccount"
+                            href="/admin/add-account"
                         >
                             Register account
                         </Button>
@@ -50,7 +50,7 @@ export default function Login() {
                             }}
                             variant="outlined"
                             sx={{backgroundColor: "white"}}
-                            href="/deleteAccount"
+                            href="admin/delete-account"
                         >
                             Delete account
                         </Button>
@@ -78,7 +78,7 @@ export default function Login() {
                             }}
                             variant="outlined"
                             sx={{backgroundColor: "white"}}
-                            href="/allUsers"
+                            href="/admin/users-all"
                         >
                             See all users
                         </Button>

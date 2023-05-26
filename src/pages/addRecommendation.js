@@ -10,8 +10,7 @@ import {InputLabel} from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import {useNavigate} from "react-router-dom";
-import Footer from "./footer";
-import Header from "./header";
+import Footer from "./components/footer";
 import axios from "axios";
 import authHeader from "../services/auth-header";
 import MenuItem from "@mui/material/MenuItem";
@@ -22,6 +21,7 @@ import * as Yup from "yup";
 import AuthService from "../services/auth.service";
 import RecommendationService from "../services/recommendation.service";
 import MailService from "../services/mail.service";
+import {Sidebar} from "./components/Sidebar/Sidebar";
 
 const user = AuthService.getCurrentUser();
 
@@ -177,7 +177,7 @@ function AddRecommendation() {
 
     return (
         <div>
-            <Header/>
+            <Sidebar/>
             <br/>
             <div>
                 <Container

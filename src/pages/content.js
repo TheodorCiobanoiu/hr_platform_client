@@ -2,16 +2,25 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import Footer from "./footer";
-import Header from "./header";
+import Footer from "./components/footer";
 import AuthService from "../services/auth.service";
 import axios from "axios";
 import authHeader from "../services/auth-header";
+import {Sidebar} from "./components/Sidebar/Sidebar";
+import {useNavigate} from "react-router-dom";
 
-const user = AuthService.getCurrentUser();
-const role = user.roles[0];
 
 export default function Content() {
+    const user = AuthService.getCurrentUser();
+    const role = user.roles[0];
+    const navigate = useNavigate();
+    React.useEffect(() => {
+        const noUserPresent = AuthService.checkForUser();
+        if (noUserPresent) {
+            console.log("No user found inside local storage, navigating to /login");
+            navigate('/login');
+        }
+    }, []);
 
     const handleTestButton = () => {
         axios.get("http://localhost:8082/pdf-generate/test-file/", {headers: authHeader(), responseType: 'blob'})
@@ -22,7 +31,7 @@ export default function Content() {
 
     return (
         <div>
-            <Header/>
+            <Sidebar/>
             <br/>
             <div>
                 <Box sx={{width: "30%", margin: "auto", color: "#b34454"}}>
@@ -37,7 +46,7 @@ export default function Content() {
                             }}
                             variant="outlined"
                             sx={{backgroundColor: 'white'}}
-                            href="/completeRecommendation"
+                            href="/recommendation/add"
                         >
                             Add recommendation
                         </Button>
@@ -67,7 +76,7 @@ export default function Content() {
                                 }}
                                 variant="outlined"
                                 sx={{backgroundColor: 'white'}}
-                                href="/viewRecommendations"
+                                href="/recommendations/all"
                             >
                                 See all recommendations
                             </Button>

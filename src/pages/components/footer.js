@@ -4,17 +4,17 @@ import Typography from "@mui/material/Typography";
 function Copyright(props) {
   return (
     <Typography
-      variant="body2"
-      color="black"
-      align="center"
-      position="absolute"
-      bottom='0'
-      width="100%"
-      bgcolor="white"
-      {...props}
+        variant="body2"
+        color="black"
+        align="center"
+        position="absolute"
+        bottom='0'
+        width="100%"
+        bgcolor="white"
+        {...props}
     >
       {"Copyright © "}
-      CV/Resume Platform &nbsp;
+      HR Platform &nbsp;
       {new Date().getFullYear()}
     </Typography>
   );
