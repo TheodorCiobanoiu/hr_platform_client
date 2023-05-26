@@ -1,5 +1,6 @@
 import axios from "axios";
 import authHeader from "./auth-header";
+import UsersService from "./users.service";
 
 const API_URL = "http://localhost:8082/api/auth/";
 // const API_URL_CHECK_TOKEN = "http://localhost:8082/admin/check-token/";
@@ -16,7 +17,7 @@ class AuthService {
                     await localStorage.setItem("user", JSON.stringify(response.data));
                     console.log("User added to local storage");
                 }
-
+                UsersService.getUserById(response.data.id);
                 return response.data;
             });
     }
@@ -64,8 +65,6 @@ class AuthService {
 
     checkForUser() {
         const user = this.getCurrentUser();
-        console.log(user);
-        console.log(user.token.length === 0);
         return (user.token.length === 0);
     }
 
