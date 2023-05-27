@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Component} from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -7,151 +6,181 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import AuthService from "../services/auth.service";
-import {withRouter} from "../common/with-router";
+import {useNavigate} from "react-router-dom";
+import {Paper} from "@mui/material";
+import {styled} from "@mui/system";
 
-class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.onChangeUsername = this.onChangeUsername.bind(this);
-        this.onChangePassword = this.onChangePassword.bind(this);
+const GradientBorderPaper = styled(Paper)(({theme}) => ({
+    padding: theme.spacing(10),
+    background: "white",
+    border: 0,
+    borderRadius: "20px",
+    backgroundOrigin: "border-box",
+    backgroundClip: "content-box, border-box",
+    boxDecorationBreak: "clone",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    maxWidth: "400px",
+    marginTop: "15vh",
+}));
 
-        this.state = {
-            username: "",
-            password: "",
-            loading: false,
-            message: "",
-        };
+const StyledTextField = styled(TextField)({
+    '& label': {
+        color: '#632ce4',
+    },
+    '& label.Mui-focused': {
+        color: '#15171c',
+    },
+    '& .MuiInput-underline:after': {
+        borderBottomColor: '#B2BAC2',
+    },
+    '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+            borderColor: '#15171c',
+        },
+        '&:hover fieldset': {
+            borderColor: '#B2BAC2',
+        },
+        '&.Mui-focused fieldset': {
+            borderColor: '#632ce4',
+        },
+    },
+});
+
+const StyledButton = styled(Button)({
+    borderColor: '#15171c',
+    borderRadius: 10,
+    padding: "18px 36px",
+    fontSize: "18px",
+    color: "#632ce4",
+    position: "relative",
+    borderWidth: 2,
+    '&:hover': {
+        borderColor: '#632ce4',
+        borderWidth: 2,
+        color: '#15171c',
     }
+});
 
-    onChangeUsername(e) {
-        this.setState({
-            username: e.target.value,
-        });
-    }
+const Login = () => {
+    const navigate = useNavigate();
 
-    onChangePassword(e) {
-        this.setState({
-            password: e.target.value,
-        });
-    }
+    const [username, setUsername] = React.useState("");
+    const [password, setPassword] = React.useState("");
+    const [message, setMessage] = React.useState("");
+    const [usernameError, setUsernameError] = React.useState(false);
+    const [passwordError, setPasswordError] = React.useState(false);
+    const [loginError, setLoginError] = React.useState(false);
 
-    handleSubmit(event) {
+    const handleSubmit = (event) => {
         event.preventDefault();
-        console.log({
-            username: this.state.username,
-            password: this.state.password,
-        });
-        this.setState({
-            message: "",
-            loading: true,
-        });
+        setMessage("");
+        setUsernameError(false);
+        setPasswordError(false);
+        setLoginError(false);
 
-        //Nu stiu daca e necesara asta, daca pica ceva se poate scoate
-        // this.form.validateAll();
-
-        AuthService.login(this.state.username, this.state.password).then(
+        AuthService.login(username, password).then(
             () => {
-                this.props.router.navigate("/content");
+                navigate("/overview");
                 window.location.reload();
             },
-            (error) => {
-                const responseMessage =
-                    (error.response &&
-                        error.response.data &&
-                        error.response.data.message) ||
-                    error.message ||
-                    error.toString();
-
-                this.setState({
-                    loading: false,
-                    message: responseMessage,
-                });
+            () => {
+                setMessage("Incorrect username or password");
+                setUsernameError(true);
+                setPasswordError(true);
+                setLoginError(true);
             }
         );
+    };
+
+    const resetLoginError = () => {
+        if (loginError) {
+            setLoginError(false);
+            setUsernameError(false);
+            setPasswordError(false);
+        }
     }
 
-    render() {
+    React.useEffect(() => {
         AuthService.logout();
-        return (
-            <div style={{
+    }, []);
+
+    return (
+        <div
+            style={{
                 display: "flex",
                 justifyContent: "center",
-                alignItems: "flex-start",
-                minHeight: "100vh"
-            }}>
+                alignItems: "center",
+            }}
+        >
+            <GradientBorderPaper elevation={3}>
+                <Avatar sx={{m: 1, bgcolor: "#632ce4"}}>
+                    <LockOutlinedIcon/>
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                    Sign in
+                </Typography>
                 <Box
-                    sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        width: "100%",
-                        maxWidth: "400px",
-                        marginTop: "25vh" // Adjust this value as needed
-                    }}
+                    component="form"
+                    onSubmit={handleSubmit}
+                    noValidate
+                    sx={{mt: 1}}
                 >
-                    <Avatar sx={{m: 1, bgcolor: "secondary.main"}}>
-                        <LockOutlinedIcon/>
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
-                    </Typography>
-                    <Box
-                        component="form"
-                        onSubmit={this.handleSubmit}
-                        noValidate
-                        sx={{mt: 1}}
+                    <StyledTextField
+                        margin="normalc"
+                        required
+                        fullWidth
+                        id="username"
+                        label="Username"
+                        name="username"
+                        autoComplete="username"
+                        autoFocus
+                        color={''}
+                        onChange={(e) => {
+                            setUsername(e.target.value);
+                            resetLoginError();
+                        }}
+                        error={usernameError}
+                    />
+                    <StyledTextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        onChange={(e) => {
+                            setPassword(e.target.value);
+                            resetLoginError();
+                        }}
+                        error={passwordError}
+                    />
+                    <br/>
+                    <br/>
+                    <StyledButton
+                        type="submit"
+                        fullWidth
+                        variant="outlined"
+                        onClick={handleSubmit}
                     >
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="username"
-                            label="Username"
-                            name="username"
-                            autoComplete="username"
-                            autoFocus
-                            onChange={this.onChangeUsername}
-                        />
-                        <TextField
-                            input="passwordField"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            onChange={this.onChangePassword}
-                        />
-                        <br/>
-                        <br/>
-
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="outlined"
-                            style={{
-                                borderRadius: 35,
-                                padding: "18px 36px",
-                                fontSize: "18px",
-                                color: "blue",
-                                borderWidth: 4,
-                                position: "relative",
-                            }}
-                            onClick={this.handleSubmit}
-                        >
-                            Sign In
-                        </Button>
-                        <br/>
-                        <br/>
-                    </Box>
+                        Sign In
+                    </StyledButton>
+                    {loginError && (
+                        <Typography variant="body2" style={{color: "red", marginTop: "1em"}}>
+                            {message}
+                        </Typography>
+                    )}
+                    <br/>
+                    <br/>
                 </Box>
-            </div>
-        );
-    }
-}
+            </GradientBorderPaper>
+        </div>
+    );
+};
 
-export default withRouter(Login);
+export default Login;
