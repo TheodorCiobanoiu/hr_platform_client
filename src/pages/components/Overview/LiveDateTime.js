@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import styled from "styled-components";
-import "@fontsource/varela-round"; // Import the font
 
 const DateTimeContainer = styled.div`
   float: right;
@@ -9,7 +8,7 @@ const DateTimeContainer = styled.div`
 const DateText = styled.h2`
   font-size: 1.5em;
   font-weight: bold;
-  font-family: 'Varela Round', sans-serif;
+  font-family: 'Prompt', sans-serif;
   color: #15171c;
   margin: 0;
 `;
@@ -17,7 +16,7 @@ const DateText = styled.h2`
 const TimeText = styled.h2`
   font-size: 1.2em;
   font-weight: bold;
-  font-family: 'Varela Round', sans-serif;
+  font-family: 'Prompt', sans-serif;
   color: #15171c;
   margin: 0;
 `;

@@ -55,10 +55,12 @@ const StyledButton = styled(Button)({
     borderRadius: 10,
     padding: "18px 36px",
     fontSize: "18px",
-    color: "#632ce4",
+    color: "#15171c",
     position: "relative",
     borderWidth: 2,
+    backgroundColor: "rgba(99,44,228,0.4)",
     '&:hover': {
+        backgroundColor: "rgba(99,44,228,0.7)",
         borderColor: '#632ce4',
         borderWidth: 2,
         color: '#15171c',
@@ -165,7 +167,7 @@ const Login = () => {
                     <StyledButton
                         type="submit"
                         fullWidth
-                        variant="outlined"
+                        variant="filledTonal"
                         onClick={handleSubmit}
                     >
                         Sign In
