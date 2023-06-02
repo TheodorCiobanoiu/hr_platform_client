@@ -148,7 +148,7 @@ export default function StatusRecommendations() {
                     aria-describedby="parent-modal-description"
                 >
 
-                    <Box sx={{...style, width: "80%", marginTop: "320px"}}>
+                    <Box sx={{...style, width: "80%"}}>
                         <h2 id="parent-modal-title">
                             Recommendation #{currentRecommendation.id}:{" "}
                             {currentRecommendation.candidateFirstName}{" "}

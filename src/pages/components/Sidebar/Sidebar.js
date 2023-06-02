@@ -76,13 +76,15 @@ export const Sidebar = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const user = AuthService.getCurrentUser();
     const navigate = useNavigate();
+
     React.useEffect(() => {
         const noUserPresent = AuthService.checkForUser();
         if (noUserPresent) {
             console.log("No user found inside local storage, navigating to /login");
-            navigate('/login');
+            navigate('/login', {replace: true});
         }
     }, []);
+
     const showSidebar = () => {
         setSidebar(!sidebar);
     }
