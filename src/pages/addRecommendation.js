@@ -119,7 +119,7 @@ function AddRecommendation() {
                 console.log(response);
             });
             MailService.sendMail(MAIL_RECEIVER, MAIL_SUBJECT, MAIL_TEXT);
-            navigate("/content");
+            navigate("/overview");
         });
     };
     const [value, setValue] = React.useState();
