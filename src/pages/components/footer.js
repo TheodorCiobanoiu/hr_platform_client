@@ -1,29 +1,23 @@
-import * as React from "react";
-import Typography from "@mui/material/Typography";
+import React from "react";
+import styled from "styled-components";
 
-function Copyright(props) {
-  return (
-    <Typography
-        variant="body2"
-        color="black"
-        align="center"
-        position="absolute"
-        bottom='0'
-        width="100%"
-        bgcolor="white"
-        {...props}
-    >
-      {"Copyright © "}
-      HR Platform &nbsp;
-      {new Date().getFullYear()}
-    </Typography>
-  );
-}
+const FooterContainer = styled.footer`
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding: 20px 0;
+`;
 
-export default function Footer() {
-  return (
-    <footer>
-      <Copyright />
-    </footer>
-  );
-}
+const Footer = () => {
+    const currentYear = new Date().getFullYear();
+
+    return (
+        <FooterContainer>
+            Copyright &copy; HR Platform {currentYear}
+        </FooterContainer>
+    );
+};
+
+export default Footer;
