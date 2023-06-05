@@ -1,8 +1,11 @@
 import TextField from "@mui/material/TextField";
 import {DatePicker} from "@mui/x-date-pickers";
-import {Paper} from "@mui/material";
+import {Paper, StepConnector, stepConnectorClasses} from "@mui/material";
 import Button from "@mui/material/Button";
 import {styled} from "@mui/system";
+import {Check} from "@mui/icons-material";
+import PropTypes from "prop-types";
+import Card from "@mui/material/Card";
 
 
 export const ContentContainer = styled(Paper)`
@@ -79,3 +82,82 @@ export const StyledButton = styled(Button)({
         color: '#15171c',
     }
 });
+
+export const StyledCard = styled(Card)({
+    backgroundColor: "rgba(99,44,228,0.4)",
+    color: '#15171c',
+    padding: "1em"
+});
+
+
+export const StyledConnector = styled(StepConnector)(() => ({
+    [`&.${stepConnectorClasses.alternativeLabel}`]: {
+        top: 10,
+        left: 'calc(-50% + 16px)',
+        right: 'calc(50% + 16px)',
+    },
+    [`&.${stepConnectorClasses.active}`]: {
+        [`& .${stepConnectorClasses.line}`]: {
+            borderColor: '#632ce4',
+        },
+    },
+    [`&.${stepConnectorClasses.completed}`]: {
+        [`& .${stepConnectorClasses.line}`]: {
+            borderColor: '#632ce4',
+        },
+    },
+    [`& .${stepConnectorClasses.line}`]: {
+        borderColor: '#e1e9fc',
+        borderTopWidth: 3,
+        borderRadius: 1,
+    },
+}));
+
+export function StyledStepIcon(props) {
+    const {active, completed, className} = props;
+
+    return (
+        <StyledStepIconRoot ownerState={{active}} className={className}>
+            {completed ? (
+                <Check className="StyledStepIcon-completedIcon"/>
+            ) : (
+                <div className="StyledStepIcon-circle"/>
+            )}
+        </StyledStepIconRoot>
+    );
+}
+
+StyledStepIcon.propTypes = {
+    /**
+     * Whether this step is active.
+     * @default false
+     */
+    active: PropTypes.bool,
+    className: PropTypes.string,
+    /**
+     * Mark the step as completed. Is passed to child components.
+     * @default false
+     */
+    completed: PropTypes.bool,
+};
+
+const StyledStepIconRoot = styled('div')(({theme, ownerState}) => ({
+    color: '#e1e9fc',
+    display: 'flex',
+    height: 22,
+    alignItems: 'center',
+    ...(ownerState.active && {
+        color: '#632ce4',
+    }),
+    '& .StyledStepIcon-completedIcon': {
+        color: '#632ce4',
+        zIndex: 1,
+        fontSize: 18,
+    },
+    '& .StyledStepIcon-circle': {
+        width: 8,
+        height: 8,
+        borderRadius: '50%',
+        backgroundColor: 'currentColor',
+    },
+}));

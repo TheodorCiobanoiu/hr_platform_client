@@ -65,6 +65,7 @@ export const Overview = () => {
 
     return (
         <>
+
             <Sidebar/>
             <OverviewBanner/>
             <ContentContainer>
@@ -150,6 +151,7 @@ export const Overview = () => {
                 </Grid>
             </ContentContainer>
             <Footer/>
+
         </>
     )
 }

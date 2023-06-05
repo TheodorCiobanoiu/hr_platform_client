@@ -1,7 +1,7 @@
 import React from 'react'
 import {ComponentPreview, Previews} from '@react-buddy/ide-toolbox'
 import {PaletteTree} from './palette'
-import AddRecommendation from "../pages/addRecommendation";
+import AddRecommendation from "../pages/AddRecommendation";
 
 const ComponentPreviews = () => {
     return (

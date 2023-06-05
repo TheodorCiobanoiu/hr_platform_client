@@ -6,7 +6,7 @@ import {DataGrid, GridApi, GridCellValue, GridColDef} from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 
 import RecommendationService from "../services/recommendation.service";
-import ModalRecommendation from "./modalRecommendation";
+import ModalRecommendation from "./components/ModalRecommendation";
 import {Sidebar} from "./components/Sidebar/Sidebar";
 
 const style = {

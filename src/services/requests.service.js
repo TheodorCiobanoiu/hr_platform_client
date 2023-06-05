@@ -21,6 +21,17 @@ class RequestsService {
             })
     };
 
+    getYourRequests(userId) {
+        return axios.get(API_URL + 'request/get/user/' + userId, {headers: authHeader()});
+    }
+
+    getAllRequests() {
+        return axios.get(API_URL + 'request/get/all', {headers: authHeader()});
+    }
+
+    saveRequest(request) {
+        return axios.post(API_URL + 'request/add', request, {headers: authHeader()});
+    }
 }
 
 export default new RequestsService();

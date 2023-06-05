@@ -24,7 +24,8 @@ export const SidebarData = [
                 title: 'See all requests',
                 path: '/request/all',
                 icon: <FaIcons.FaPenSquare/>,
-                visibility: "ROLE_HR"
+                visibility: "ROLE_HR",
+                alwaysVisible: false
             },
             {
                 title: 'Create Request',

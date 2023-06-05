@@ -1,15 +1,15 @@
 import "./App.css";
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import Login from "./pages/Login";
-import AddRecommendation from "./pages/addRecommendation";
-import AllRecommendation from "./pages/allRecommendations";
+import AddRecommendation from "./pages/AddRecommendation";
+import AllRecommendation from "./pages/AllRecommendations";
 import AdminControl from "./pages/adminControl";
 import AddAccount from "./pages/addAccount";
 import DeleteAccount from "./pages/deleteAccount";
 import Profile from "./pages/profile";
 import AddQuestion from "./pages/addQuestion";
 import AllUsers from "./pages/allUsers";
-import YourRecommendations from "./pages/yourRecommendations";
+import YourRecommendations from "./pages/YourRecommendations";
 import {Overview} from "./pages/Overview";
 import {CreateRequest} from "./pages/CreateRequest";
 import {YourRequests} from "./pages/YourRequests";

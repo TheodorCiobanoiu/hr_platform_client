@@ -1,9 +1,10 @@
 import axios from "axios";
 import authHeader from "./auth-header";
 import UsersService from "./users.service";
+import {useNavigate} from "react-router-dom";
 
 const API_URL = "http://localhost:8082/api/auth/";
-// const API_URL_CHECK_TOKEN = "http://localhost:8082/admin/check-token/";
+const API_URL_CHECK_TOKEN = "http://localhost:8082/admin/check-token";
 
 class AuthService {
     login(username, password) {
@@ -54,15 +55,21 @@ class AuthService {
     }
 
     // Check to see if token is expired   WIP
-    // checkToken() {
-    //     var checker = false;
-    //     axios.get(API_URL_CHECK_TOKEN, {headers: authHeader()})
-    //         .then().catch( (error) => {
-    //             console.log(error);
-    //             return true;
-    //     });
-    //     return checker;
-    // }
+    async checkToken() {
+        var checker = false;
+        await axios.get(API_URL_CHECK_TOKEN, {headers: authHeader()})
+            .then((response) => {
+                console.log(response.status);
+            })
+            .catch((error) => {
+                console.log(error);
+                checker = true;
+                useNavigate("/login", {replace: true});
+            });
+        console.log("checker");
+        console.log(checker);
+        return checker;
+    }
 
     checkForUser() {
         const user = this.getCurrentUser();

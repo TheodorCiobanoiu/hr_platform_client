@@ -12,6 +12,7 @@ import UsersService from "../services/users.service";
 import Typography from "@mui/material/Typography";
 import RequestsService from "../services/requests.service";
 import {useNavigate} from "react-router-dom";
+import Footer from "./components/footer";
 
 
 const autoCompleteOptions = [
@@ -152,6 +153,7 @@ export const CreateRequest = () => {
                         )}
                 </Grid>
             </ContentContainer>
+            <Footer/>
         </>
     )
 };

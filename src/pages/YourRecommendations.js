@@ -6,7 +6,7 @@ import {Modal} from "@mui/material";
 import Box from "@mui/material/Box";
 import Footer from "./components/footer";
 import AuthService from "../services/auth.service";
-import ModalRecommendation from "./modalRecommendation";
+import ModalRecommendation from "./components/ModalRecommendation";
 import {Sidebar} from "./components/Sidebar/Sidebar";
 
 const modalStyles = {
@@ -47,11 +47,8 @@ function YourRecommendations() {
         {field: 'candidateFirstName', headerName: 'First Name'},
         {field: 'candidateLastName', headerName: 'Last Name'},
         {field: 'candidateEmail', headerName: 'Email', width: 300},
-        {field: 'progressStatus', headerName: 'Status', width: 180}, {
-            field: 'userFullName',
-            headerName: 'Employee Name',
-            width: 180
-        },
+        {field: 'progressStatus', headerName: 'Status', width: 180},
+        {field: 'userFullName', headerName: 'Employee Name', width: 180},
         {
             field: "action",
             headerName: "Action",

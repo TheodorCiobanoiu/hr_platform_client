@@ -129,48 +129,8 @@ function AddRecommendation() {
         selectedFile: null,
     };
     const onFileChange = (event) => {
-        // Update the state
         state.selectedFile = event.target.files[0];
     };
-
-    // const [answers2, setAnswers2] = useState([])
-    // function handleOnChange (event) {
-    //    setAnswers2([...answers2, {event.: newValue}]);
-    //  }
-
-
-    // On file upload (click the upload button)
-    // const onFileUpload = (event) => {
-    //     console.log("IM INSIDE ONFILEUPLOAD")
-    //     // Create an object of formData
-    //     const formData = new FormData();
-    //     // Update the formData object
-    //     formData.append("file", state.selectedFile, state.selectedFile.name);
-    //
-    //     // Details of the uploaded file
-    //     console.log(state.selectedFile);
-    //     const user = JSON.parse(localStorage.getItem("user"));
-    //     console.log(user.token);
-    //     axios.post("http://localhost:8082/file/uploadFile", formData, {
-    //         headers: {
-    //             Authorization: "Bearer " + user.token,
-    //             "Content-Type": "multipart/form-data",
-    //         },
-    //     }).then((response) => {
-    //         console.log(response);
-    //     });
-    /* axios.post('http://localhost:8082/mail/sendMail',
-        {
-          to:'theodor.ciobanoiu@gmail.com',
-          subject:'Acesta este un test de mail',
-          text:'Dupa cum spune si titlul, acesta este doar un test :)'
-        }, {headers: authHeader()});
- */
-    // Request made to the backend api
-    // Send formData object
-    //axios.post("api/uploadfile", formData);
-    // };
-    //**************UPLOAD/DOWNLOAD STUFF
 
     const onSubmitForm = () => {
     };
@@ -269,16 +229,6 @@ function AddRecommendation() {
                                             />
                                         </Grid>
                                         <br/>
-                                        <Grid item>
-                                            {/*<InputLabel>Date:</InputLabel>*/}
-                                            {/*<TextField*/}
-                                            {/*  id="date-input"*/}
-                                            {/*  name="date"*/}
-                                            {/*  type="date"*/}
-                                            {/*  value={formValues.date}*/}
-                                            {/*  onChange={handleInputChange}*/}
-                                            {/*/>*/}
-                                        </Grid>
                                         <br/>
 
                                         <div>
@@ -322,8 +272,6 @@ function AddRecommendation() {
                                                                         id="filled-select-answer"
                                                                         select
                                                                         label="Select"
-                                                                        //value={currency}
-                                                                        // Vespi: aici la value CRED ca trebuie sa faca legatura cu answer(gen sa fie answerBody)
                                                                         onChange={props.handleChange}
                                                                         variant="filled"
                                                                         fullWidth={true}
@@ -331,7 +279,6 @@ function AddRecommendation() {
                                                                     >
                                                                         {question.possibleAnswer1 && (
                                                                             <MenuItem value={question.possibleAnswer1}>
-                                                                                {/*Vespi: banuiesc ca e aceeasi treaba ca mai sus??? la fiecare MenuItem */}
                                                                                 {question.possibleAnswer1}
                                                                             </MenuItem>
                                                                         )}

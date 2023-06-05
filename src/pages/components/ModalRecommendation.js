@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import axios from "axios";
 
 import {InputLabel, Step, StepLabel, Stepper} from "@mui/material";
-import authHeader from "../services/auth-header";
+import authHeader from "../../services/auth-header";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -19,7 +19,6 @@ const steps = [
     'Accepted',
     'Rejected'
 ];
-
 
 export default function ModalRecommendation(props) {
     console.log(props.pathName);
