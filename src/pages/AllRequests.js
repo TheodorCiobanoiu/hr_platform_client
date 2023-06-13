@@ -23,10 +23,6 @@ export const AllRequests = () => {
     const [clickedRequest, setClickedRequest] = React.useState({});
     const [openModal, setOpenModal] = React.useState(false);
 
-    React.useEffect(() => {
-        getData();
-        console.log(requests);
-    }, []);
 
     const getData = () => {
         RequestsService.getAllRequests().then((response) => {

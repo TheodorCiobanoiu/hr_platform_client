@@ -1,16 +1,17 @@
 import React from "react";
-import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
 
-import {InputLabel, Step, StepLabel, Stepper} from "@mui/material";
+import {Step, StepLabel, Stepper} from "@mui/material";
 import authHeader from "../../services/auth-header";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Card from "@mui/material/Card";
+import {StyledButton, StyledConnector, StyledStepIcon, StyledTextField} from "./StyledComponents";
+import Stack from "@mui/material/Stack";
+import {CardRecommendation} from "./CardRecommendation";
 
 const steps = [
     'Not Reviewed',
@@ -21,26 +22,22 @@ const steps = [
 ];
 
 export default function ModalRecommendation(props) {
-    console.log(props.pathName);
     let answers = props.recommendation.answerDTOS;
-    console.log(answers);
-    let candidateFirstName = props.recommendation.candidateFirstName;
-    let candidateLastName = props.recommendation.candidateLastName;
-    let candidateEmail = props.recommendation.candidateEmail;
-    let candidatePhoneNumber = props.recommendation.candidatePhoneNumber;
-    let progressStatus = props.recommendation.progressStatus;
-    let cvFileId = props.recommendation.cvFileId;
-
+    let recommendation = props.recommendation;
+    console.log(recommendation);
 
     const handleClick = () => {
-        axios.get("http://localhost:8082/file/downloadFile/" + cvFileId, {headers: authHeader(), responseType: 'blob'})
+        axios.get("http://localhost:8082/file/downloadFile/" + recommendation.cvFileId, {
+            headers: authHeader(),
+            responseType: 'blob'
+        })
             .then((response) => {
                 window.open(URL.createObjectURL(response.data));
             });
     }
 
     const getActiveStep = () => {
-        switch (progressStatus) {
+        switch (recommendation.progressStatus) {
             case "Not_Reviewed":
                 return 0;
             case "Reviewed":
@@ -56,143 +53,95 @@ export default function ModalRecommendation(props) {
 
 
     return (
-        <div style={{marginTop: "30px"}}>
-            <Box sx={{width: "100%", marginBottom: "30px"}}>
-                <Stepper activeStep={getActiveStep()} alternativeLabel>
+        <Box sx={{width: '100%', height: '90vh'}}>
+
+            <Typography variant="h4" style={{
+                marginTop: "1em",
+                marginBottom: "1em",
+                fontSize: "2em",
+                fontWeight: "bold",
+                fontFamily: "Varela Round",
+                color: "#15171c"
+            }}
+            >
+                Recommendation #{props.recommendation.id},
+                Candidate {recommendation.candidateFirstName} {recommendation.candidateLastName}
+            </Typography>
+            <Stack justifyContent="center" alignItems="center" spacing={2}>
+                <Stepper alternativeLabel activeStep={getActiveStep()} connector={<StyledConnector/>}
+                         sx={{width: '100%'}}>
                     {steps.map((label) => (
                         <Step key={label}>
-                            <StepLabel>{label}</StepLabel>
+                            <StepLabel StepIconComponent={StyledStepIcon}>{label}</StepLabel>
                         </Step>
                     ))}
                 </Stepper>
-            </Box>
-            <Grid container spacing={2}>
-                <Grid item xs={3}/>
-                <Grid item xs={3}>
-                    <InputLabel>First Name: </InputLabel>
-                </Grid>
-                <Grid item xs={3}>
-                    <InputLabel>{candidateFirstName} </InputLabel>
-                </Grid>
-                <Grid item xs={3}/>
-                <br/>
-                <Grid item xs={3}/>
-                <Grid item xs={3}>
-                    <InputLabel>Last Name: </InputLabel>
-                </Grid>
-                <Grid item xs={3}>
-                    <InputLabel>{candidateLastName} </InputLabel>
-                </Grid>
-                <Grid item xs={3}/>
-                <br/>
-                <Grid item xs={3}/>
-                <Grid item xs={3}>
-                    <InputLabel>Email: </InputLabel>
-                </Grid>
-                <Grid item xs={3}>
-                    <InputLabel>{candidateEmail} </InputLabel>
-                </Grid>
-                <Grid item xs={3}/>
-                <br/>
-                <Grid item xs={3}/>
-                <Grid item xs={3}>
-                    <InputLabel>Phone Number: </InputLabel>
-                </Grid>
-                <Grid item xs={3}>
-                    <InputLabel>{candidatePhoneNumber} </InputLabel>
-                </Grid>
-                <Grid item xs={3}/>
-                <br/>
-                <br/>
-                {answers.map((answer) => (
-                    <Grid item xs={4}>
-                        <Card sx={{maxWidth: 400, minHeight: 250}}
-                              style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
-                            <CardContent>
-                                <Typography
-                                    gutterBottom
-                                    variant="h5"
-                                    component="div"
-                                >
-                                    {answer.question.questionBody}
-                                </Typography>
-                                <Typography
-                                    gutterBottom
-                                    variant="h8"
-                                    component="div"
-                                >
-                                    {answer.answerBody}
-                                </Typography>
-
-                            </CardContent>
-                        </Card>
+                <Grid container justifyContent="center">
+                    <Grid item xs={6}>
+                        <CardRecommendation recommendation={props.recommendation}/>
                     </Grid>
+                </Grid>
+                <Grid container>
+                    {answers.map((answer) => (
+                        <Grid item xs={4}>
+                            <Card sx={{height: 300, borderSize: '2'}}>
+                                <CardContent>
+                                    <Typography variant="h5" style={{
+                                        marginTop: "1em",
+                                        marginBottom: "1em",
+                                        fontFamily: "Varela Round",
+                                        fontWeight: "bold",
+                                        color: "#15171c"
+                                    }}
+                                    >
+                                        {answer.question.questionBody}
+                                    </Typography>
+                                    <Typography variant="body1" style={{
+                                        marginTop: "1em",
+                                        marginBottom: "1em",
+                                        fontFamily: "Varela Round",
+                                        color: "#15171c"
+                                    }}
+                                    >
+                                        {answer.answerBody}
+                                    </Typography>
 
-                ))}
-                <br/>
-                <br/>
-                <Grid item xs={4}/>
-                <Grid item xs={4}>
-                    <Button
-                        style={{
-                            borderRadius: 35,
-                            padding: "18px 36px",
-                            fontSize: "18px",
-                            color: "black",
-                            borderWidth: 4,
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
-                        variant="outlined"
-                        sx={{backgroundColor: "white", height: 40}}
-                        component="label"
-                        onClick={handleClick}
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    ))}
+                </Grid>
+                <StyledButton onClick={handleClick}>
+                    Download CV
+                </StyledButton>
+
+                {props.pathName !== "/yourRecommendation" && (
+                    <StyledTextField
+                        sx={{width: 400, marginBottom: 50}}
+                        select
+                        label="Change status"
+                        onChange={(e) => props.handleInputChange(e)}
+                        name="Change status"
                     >
-                        Download CV
-                    </Button>
-                </Grid>
-                <Grid item xs={4}/>
-                <br/>
-                <br/>
-                <br/>
+                        <MenuItem value="Reviewed">
+                            Reviewed
+                        </MenuItem>
 
-                <Grid item xs={4}/>
-                <Grid item xs={4}>
-                    {props.pathName !== "/yourRecommendation" && (
-                        <TextField
-                            id="filled-select-answer"
-                            select
-                            label="Change status"
-                            onChange={(e) => props.handleInputChange(e)}
-                            variant="filled"
-                            fullWidth={true}
-                            name="Change status"
-                        >
-                            <MenuItem value="Reviewed">
-                                Reviewed
-                            </MenuItem>
+                        <MenuItem value="In progress">
+                            In progress
+                        </MenuItem>
 
-                            <MenuItem value="In progress">
-                                In progress
-                            </MenuItem>
+                        <MenuItem value="Accepted">
+                            Accepted
+                        </MenuItem>
 
-                            <MenuItem value="Accepted">
-                                Accepted
-                            </MenuItem>
+                        <MenuItem value="Rejected">
+                            Rejected
+                        </MenuItem>
 
-                            <MenuItem value="Rejected">
-                                Rejected
-                            </MenuItem>
-
-                        </TextField>
-                    )}
-                </Grid>
-                <Grid item xs={4}/>
-            </Grid>
-
-            <br/>
-
-            <br/>
-        </div>
+                    </StyledTextField>
+                )}
+            </Stack>
+        </Box>
     );
 }

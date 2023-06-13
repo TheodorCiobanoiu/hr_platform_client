@@ -1,56 +1,68 @@
 import Footer from "./components/footer";
-import {Modal} from "@mui/material";
+import {Backdrop, Modal} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import Box from "@mui/material/Box";
 import {DataGrid, GridApi, GridCellValue, GridColDef} from "@mui/x-data-grid";
-import Button from "@mui/material/Button";
 
 import RecommendationService from "../services/recommendation.service";
 import ModalRecommendation from "./components/ModalRecommendation";
 import {Sidebar} from "./components/Sidebar/Sidebar";
-
-const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    pt: 2,
-    px: 4,
-    pb: 3,
-};
+import {ContentContainer, StyledButton} from "./components/StyledComponents";
+import AuthService from "../services/auth.service";
 
 const modalStyles = {
-    overflow: 'scroll',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'row'
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: '90%',
+    height: '90vh',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
 };
-export default function StatusRecommendations() {
+
+const containerStyle = {
+    width: '100%',
+    height: '100%',
+    overflowY: 'auto',
+    '&::-webkit-scrollbar': {
+        width: '8px',
+    },
+    '&::-webkit-scrollbar-thumb': {
+        backgroundColor: '#888',
+        borderRadius: '4px',
+    },
+    '&::-webkit-scrollbar-thumb:hover': {
+        backgroundColor: '#555',
+    },
+}
+
+export default function AllRecommendations() {
     let [recommendation, setRecommendation] = useState([]);
     let [open, setOpen] = useState(false);
     let [currentRecommendation, setCurrentRecommendation] = useState({});
+
 
     const handleClose = () => {
         setOpen(false);
     };
     const columns: GridColDef[] = [
-        {field: "id", headerName: "Id", width: 50},
-        {field: "candidateFirstName", headerName: "First Name"},
-        {field: "candidateLastName", headerName: "Last Name"},
+        {field: 'id', headerName: 'Id', flex: 1, maxWidth: 50},
+        {
+            field: 'fullName', headerName: 'Candidate Name', flex: 1, valueGetter: (params) => {
+                return (params.row.candidateFirstName + " " + params.row.candidateLastName);
+            }
+        },
         {field: "candidateEmail", headerName: "Email", width: 300},
         {field: "progressStatus", headerName: "Status", width: 180},
         {
             field: "userFullName",
             headerName: "Employee Name",
-            width: 180,
+            width: 200,
         },
         {
             field: "action",
-            headerName: "Action",
+            headerName: "",
             sortable: false,
             renderCell: (params) => {
                 const onClick = (e) => {
@@ -73,14 +85,14 @@ export default function StatusRecommendations() {
                     setOpen(true);
                 };
 
-                return <Button onClick={onClick}>Click</Button>;
+                return <StyledButton onClick={onClick} sx={{width: '90%', height: '90%'}}>open</StyledButton>;
             },
         },
     ];
 
     const handleStatusChange = async (e) => {
         const {name, value} = e.target;
-        let recommendationStatus='';
+        let recommendationStatus = '';
         switch (value) {
             case("Reviewed"):
                 recommendationStatus = 'Reviewed';
@@ -108,59 +120,59 @@ export default function StatusRecommendations() {
         // await setCurrentRecommendation(recommendation.find((element) => element.id === currentRecommendation.id));
     }
 
-    const getData = () => {
-        RecommendationService.getAllRecommendations()
-            .then(async (response) => {
+    const getData = async () => {
+        const user = AuthService.getCurrentUser();
+        console.log(window.location.pathname);
+        if (window.location.pathname === '/recommendations/all' && (user.roles[0] === 'ROLE_HR' || user.roles[0] === 'ROLE_ADMIN')) {
+            console.log("HERE");
+            await RecommendationService.getAllRecommendations()
+                .then(async (response) => {
+                    const data = response.data;
+                    await setRecommendation(data);
+                    console.log("recommendations:");
+                    console.log(data);
+                })
+                .catch((error) => console.log(error));
+        } else {
+            await RecommendationService.getRecommendationsById(user.id).then((response) => {
                 const data = response.data;
-                console.log("Inside getData(): allData variable: ");
-                console.log(data);
-                await setRecommendation(data);
-            })
-            .catch((error) => console.log(error));
+                setRecommendation(data);
+            }).catch(error => console.log(error));
+        }
     };
 
     useEffect(() => {
         getData();
-        console.log("Recommendation objects:");
-        console.log(recommendation);
     }, []);
 
     return (
         <Box p="5">
             <Sidebar/>
-            <div style={{height: 700, width: "100%"}}>
-                <DataGrid
-                    style={{color: "black", backgroundColor: "white"}}
-                    rows={recommendation}
-                    columns={columns}
-                    pageSize={10}
-                    getRowId={(row) => row.id}
-                    rowsPerPageOptions={[5]}
-                    checkboxSelection
-                    disableSelectionOnClick
-                    experimentalFeatures={{newEditingApi: true}}
-                />
-                <Modal
-                    style={modalStyles}
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="parent-modal-title"
-                    aria-describedby="parent-modal-description"
-                >
-
-                    <Box sx={{...style, width: "80%"}}>
-                        <h2 id="parent-modal-title">
-                            Recommendation #{currentRecommendation.id}:{" "}
-                            {currentRecommendation.candidateFirstName}{" "}
-                            {currentRecommendation.candidateLastName}{" "}
-                        </h2>
-                        <div id="parent-modal-description">
-                            <ModalRecommendation recommendation={currentRecommendation} getData={getData}
-                                                 handleInputChange={handleStatusChange}/>
-                        </div>
-                    </Box>
-                </Modal>
-            </div>
+            <ContentContainer>
+                <div style={{height: '71vh', width: '100%'}}>
+                    <DataGrid
+                        rows={recommendation}
+                        columns={columns}
+                        pageSize={8}
+                        getRowId={(row) => row.id}
+                        rowsPerPageOptions={[5]}
+                        initialState={{
+                            sorting: {sortModel: [{field: "id", sort: "desc"}]}
+                        }}
+                    />
+                </div>
+                <Backdrop open={open} onClick={handleClose}>
+                    <Modal open={open} style={modalStyles} onClick={(e) => e.stopPropagation()}>
+                        <ContentContainer sx={containerStyle}>
+                            <Box p={2}>
+                                <ModalRecommendation recommendation={currentRecommendation} getData={getData}
+                                                     handleInputChange={handleStatusChange}
+                                                     pathName={window.location.pathname}/>
+                            </Box>
+                        </ContentContainer>
+                    </Modal>
+                </Backdrop>
+            </ContentContainer>
             <Box sx={{mt: 0, mb: 0}}>
                 <Footer/>
             </Box>

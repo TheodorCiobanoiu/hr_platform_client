@@ -6,6 +6,7 @@ import {styled} from "@mui/system";
 import {Check} from "@mui/icons-material";
 import PropTypes from "prop-types";
 import Card from "@mui/material/Card";
+import Calendar from "react-calendar";
 
 
 export const ContentContainer = styled(Paper)`
@@ -65,6 +66,39 @@ export const StyledDatePicker = styled(DatePicker)({
     },
 });
 
+export const StyledCalendar = styled(Calendar)`
+  font-family: 'Varela Round', sans-serif;
+
+  .react-calendar__month-view__days__day {
+    height: 50px;
+  }
+
+  .highlight {
+    background: rgba(99, 44, 228, 0.4);
+  }
+
+  .react-calendar__navigation {
+    display: none;
+  }
+
+  .react-calendar__tile {
+    border-radius: 5px;
+    border: 1px solid;
+  }
+
+  .react-calendar__month-view__weekdays__weekday {
+    font-weight: bold;
+  }
+
+  .holiday {
+    background: rgba(255, 115, 0, 0.4);
+  }
+
+  .vacation {
+    background: rgba(58, 196, 3, 0.4);
+  }
+
+`;
 
 export const StyledButton = styled(Button)({
     borderColor: '#15171c',
@@ -128,16 +162,8 @@ export function StyledStepIcon(props) {
 }
 
 StyledStepIcon.propTypes = {
-    /**
-     * Whether this step is active.
-     * @default false
-     */
     active: PropTypes.bool,
     className: PropTypes.string,
-    /**
-     * Mark the step as completed. Is passed to child components.
-     * @default false
-     */
     completed: PropTypes.bool,
 };
 
@@ -161,3 +187,10 @@ const StyledStepIconRoot = styled('div')(({theme, ownerState}) => ({
         backgroundColor: 'currentColor',
     },
 }));
+
+export const modalStyles = {
+    overflow: 'scroll',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'row'
+};

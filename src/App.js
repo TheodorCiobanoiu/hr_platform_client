@@ -14,6 +14,8 @@ import {Overview} from "./pages/Overview";
 import {CreateRequest} from "./pages/CreateRequest";
 import {YourRequests} from "./pages/YourRequests";
 import {AllRequests} from "./pages/AllRequests";
+import {Timesheet} from "./pages/Timesheet";
+import {TimesheetData} from "./pages/TimesheetData";
 
 function App() {
     return (
@@ -25,7 +27,7 @@ function App() {
                 <Route path="/recommendations/add" element={<AddRecommendation/>}></Route>
                 <Route path="/recommendations/all" element={<AllRecommendation/>}></Route>
                 <Route path="/admin" element={<AdminControl/>}></Route>
-                <Route path="/yourRecommendation" element={<YourRecommendations/>}></Route>
+                <Route path="/recommendations/user" element={<YourRecommendations/>}></Route>
                 <Route path="/admin/add-account" element={<AddAccount/>}></Route>
                 <Route path="/admin/delete-account" element={<DeleteAccount/>}></Route>
                 <Route path="/profile" element={<Profile/>}></Route>
@@ -34,6 +36,8 @@ function App() {
                 <Route path="/request/create" element={<CreateRequest/>}></Route>
                 <Route path="/request/user/all" element={<YourRequests/>}></Route>
                 <Route path="/request/all" element={<AllRequests/>}></Route>
+                <Route path="/timesheet/user" element={<Timesheet/>}></Route>
+                <Route path="/timesheet/data" element={<TimesheetData/>}></Route>
             </Routes>
         </BrowserRouter>
     );

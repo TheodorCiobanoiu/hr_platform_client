@@ -11,6 +11,8 @@ import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import {useNavigate} from "react-router-dom";
+import * as React from "react";
+import AdminService from "../services/admin.service";
 
 const ContentContainer = styled(Paper)`
   width: 80%;
@@ -50,10 +52,22 @@ const StyledCard = styled(Card)({
 
 export const Overview = () => {
 
+    const [overviewData, setOverviewData] = React.useState({});
+
+    React.useEffect(() => {
+        getData();
+    }, []);
+
     const navigate = useNavigate();
 
     const currentUser = UsersService.getFullUser();
     const userFullName = currentUser.firstName + " " + currentUser.lastName;
+
+    const getData = async () => {
+        const data = await AdminService.getOverviewMessage(currentUser.userID);
+        setOverviewData(data);
+        console.log(data);
+    }
 
     const handleOngoingRequestsButton = () => {
         navigate("/request/user/all", {replace: true});
@@ -62,6 +76,10 @@ export const Overview = () => {
     const handleCreateRequestButton = () => {
         navigate("/request/create", {replace: true});
     };
+
+    const handleFillTimesheetButton = () => {
+        navigate("/timesheet/user", {replace: true});
+    }
 
     return (
         <>
@@ -79,13 +97,24 @@ export const Overview = () => {
                             <CardContent>
                                 <Grid container>
                                     <Grid item xs={12}>
-                                        <Typography gutterBottom variant="h5" component="div">
+                                        <Typography variant="h5" style={{
+                                            marginBottom: "1em",
+                                            fontFamily: "Varela Round",
+                                            fontWeight: "bold",
+                                            color: "#15171c"
+                                        }}
+                                        >
                                             News and info
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <Typography>
-                                            Content
+                                        <Typography variant="body1" style={{
+                                            fontSize: "1em",
+                                            fontFamily: "Varela Round",
+                                            color: "#15171c"
+                                        }}
+                                        >
+                                            {overviewData.timeTillNextVacationDay}
                                         </Typography>
                                     </Grid>
                                 </Grid>
@@ -98,36 +127,49 @@ export const Overview = () => {
                         <StyledCard>
                             <CardContent>
                                 <Grid item xs={12}>
-                                    <Typography gutterBottom variant="h5" component="div">
+                                    <Typography variant="h5" style={{
+                                        marginBottom: "1em",
+                                        fontFamily: "Varela Round",
+                                        fontWeight: "bold",
+                                        color: "#15171c"
+                                    }}
+                                    >
                                         Your requests
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Typography>
-                                        Content 2
+                                    <Typography variant="body1" style={{
+                                        fontSize: "1em",
+                                        fontFamily: "Varela Round",
+                                        color: "#15171c"
+                                    }}
+                                    >
+                                        {overviewData.noOfOpenRequests}
                                     </Typography>
                                 </Grid>
                             </CardContent>
                             <CardActions>
-                                <Grid item xs={6}>
-                                    <StyledButton
-                                        type="submit"
-                                        fullWidth
-                                        variant="filledTonal"
-                                        onClick={handleOngoingRequestsButton}
-                                    >
-                                        See ongoing requests
-                                    </StyledButton>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <StyledButton
-                                        type="submit"
-                                        fullWidth
-                                        variant="filledTonal"
-                                        onClick={handleCreateRequestButton}
-                                    >
-                                        Create a new request
-                                    </StyledButton>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12}>
+                                        <StyledButton
+                                            type="submit"
+                                            fullWidth
+                                            variant="filledTonal"
+                                            onClick={handleOngoingRequestsButton}
+                                        >
+                                            See ongoing requests
+                                        </StyledButton>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <StyledButton
+                                            type="submit"
+                                            fullWidth
+                                            variant="filledTonal"
+                                            onClick={handleCreateRequestButton}
+                                        >
+                                            Create a new request
+                                        </StyledButton>
+                                    </Grid>
                                 </Grid>
                             </CardActions>
                         </StyledCard>
@@ -135,17 +177,42 @@ export const Overview = () => {
                     <Grid item xs={4}>
                         <StyledCard>
                             <CardContent>
-                                <Grid item xs={12}>
-                                    <Typography gutterBottom variant="h5" component="div">
-                                        Work time
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Typography>
-                                        Content 3
-                                    </Typography>
+                                <Grid container justifyContent="space-between">
+                                    <Grid item xs={12}>
+                                        <Typography variant="h5" style={{
+                                            marginBottom: "1em",
+                                            fontFamily: "Varela Round",
+                                            fontWeight: "bold",
+                                            color: "#15171c"
+                                        }}
+                                        >
+                                            Timesheets
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Typography variant="body1" style={{
+                                            fontSize: "1em",
+                                            fontFamily: "Varela Round",
+                                            color: "#15171c"
+                                        }}
+                                        >
+                                            {overviewData.warningForTimesheet}
+                                        </Typography>
+                                    </Grid>
                                 </Grid>
                             </CardContent>
+                            <CardActions>
+                                <Grid item xs={12}>
+                                    <StyledButton
+                                        type="submit"
+                                        fullWidth
+                                        variant="filledTonal"
+                                        onClick={handleFillTimesheetButton}
+                                    >
+                                        Fill timesheet
+                                    </StyledButton>
+                                </Grid>
+                            </CardActions>
                         </StyledCard>
                     </Grid>
                 </Grid>

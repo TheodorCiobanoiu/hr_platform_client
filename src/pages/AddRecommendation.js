@@ -1,14 +1,6 @@
 import React, {useEffect, useState} from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import FormLabel from "@mui/material/FormLabel";
-import {InputLabel} from "@mui/material";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import {useNavigate} from "react-router-dom";
 import Footer from "./components/footer";
 import axios from "axios";
@@ -16,12 +8,16 @@ import authHeader from "../services/auth-header";
 import MenuItem from "@mui/material/MenuItem";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import {ErrorMessage, Field, Form, Formik} from "formik";
+import {Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import AuthService from "../services/auth.service";
 import RecommendationService from "../services/recommendation.service";
 import MailService from "../services/mail.service";
 import {Sidebar} from "./components/Sidebar/Sidebar";
+import {ContentContainer, StyledButton, StyledTextField} from "./components/StyledComponents";
+import Stack from "@mui/material/Stack";
+import {Alert, Paper} from "@mui/material";
+
 
 const user = AuthService.getCurrentUser();
 
@@ -32,6 +28,12 @@ const MAIL_TEXT = "There is a new recommendation submitted by " + user.username 
 function AddRecommendation() {
 
     const [questions, setQuestions] = useState(null);
+    const [fileSelected, setFileSelected] = React.useState(false);
+    const [selectedFile, setSelectedFile] = React.useState(null);
+    const [value, setValue] = React.useState();
+    const navigate = useNavigate();
+
+
     const fetchData = () => {
         return axios
             .get("http://localhost:8082/api/question/all", {headers: authHeader()})
@@ -42,18 +44,10 @@ function AddRecommendation() {
     }, []);
 
     const validationSchema = Yup.object().shape({
-        candidateFirstName: Yup.string(),
-        candidateLastName: Yup.string(),
-        candidateEmail: Yup.string()
-            .email("Format email invalid!")
-            .when("users", (users) => {
-                return users && users.length > 0
-                    ? Yup.string().email("Format email invalid!")
-                    : Yup.string()
-                        .email("Format email invalid!")
-                        .required("Completați emailul sau adăugați un csv cu useri!");
-            }),
-        candidatePhoneNumber: Yup.string().min(10).required("Adaugati un numar de telefon pentru candidat.")
+        candidateFirstName: Yup.string().required("This field is required"),
+        candidateLastName: Yup.string().required("This field is required"),
+        candidateEmail: Yup.string().email("Invalid email format").required("Email is required"),
+        candidatePhoneNumber: Yup.string().min(10, 'Phone number too short').max(10, 'Phone number too long').required("Invalid phone format")
     });
 
     const handleSubmit = async (values) => {
@@ -86,8 +80,8 @@ function AddRecommendation() {
         console.log(allAnswers);
 
         const formData = new FormData();
-        await formData.append("file", state.selectedFile, state.selectedFile.name);
-        console.log(state.selectedFile);
+        await formData.append("file", selectedFile, selectedFile.name);
+        console.log(selectedFile);
         const user = JSON.parse(localStorage.getItem("user"));
         let recommendationFileId = 0;
         axios.post("http://localhost:8082/file/uploadFile", formData, {
@@ -108,6 +102,8 @@ function AddRecommendation() {
                 candidateEmail: values.candidateEmail,
                 candidatePhoneNumber: values.candidatePhoneNumber,
                 progressStatus: "Not_Reviewed",
+                department: values.department,
+                jobType: values.jobType,
                 cvFileId: recommendationFileId,
                 answers: allAnswers,
             }
@@ -122,14 +118,11 @@ function AddRecommendation() {
             navigate("/overview");
         });
     };
-    const [value, setValue] = React.useState();
-    const navigate = useNavigate();
-    const state = {
-        // Initially, no file is selected
-        selectedFile: null,
-    };
+
+
     const onFileChange = (event) => {
-        state.selectedFile = event.target.files[0];
+        setSelectedFile(event.target.files[0]);
+        setFileSelected(true);
     };
 
     const onSubmitForm = () => {
@@ -138,309 +131,298 @@ function AddRecommendation() {
     return (
         <div>
             <Sidebar/>
-            <br/>
-            <div>
-                <Container
-                    maxWidth="sm"
-                    fixed
-                    sx={{
-                        width: "90%",
-                        color: "white",
-                        boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
-                        position: "relative",
-                    }}
-                >
-                    <Box sx={{bgcolor: "#ffffff", borderRadius: 10}}>
-                        <Formik initialValues={{}} validationSchema={validationSchema} onSubmit={handleSubmit}>
-                            {(props) => (
-                                <Form noValidate onSubmit={props.handleSubmit} className="form">
-                                    <Grid
-                                        className="grid-form"
-                                        container
-                                        alignItems="center"
-                                        justifyContent="center"
-                                        direction="column"
+            <ContentContainer sx={{width: '80%', maxWidth: '1000'}}>
+                <Box sx={{bgcolor: "#ffffff", borderRadius: 10}}>
+                    <Formik initialValues={{}} validationSchema={validationSchema} onSubmit={handleSubmit}>
+                        {(props) => (
+                            <Form noValidate onSubmit={props.handleSubmit} className="form">
+                                <Stack justifyContent="center" alignItems="center" width="100%" spacing={5}>
+                                    <Typography variant="h4" style={{
+                                        marginTop: "1em",
+                                        fontFamily: "Varela Round",
+                                        fontWeight: "bold",
+                                        color: "#15171c"
+                                    }}
                                     >
-                                        <FormLabel
-                                            style={{
-                                                margin: "20px",
-                                            }}
-                                        >
-                                            Recommendation Form
-                                        </FormLabel>
-                                        <Grid item>
-                                            <InputLabel>First Name: </InputLabel>
-                                            <Field
-                                                as={TextField}
-                                                disabled={false}
-                                                required
-                                                id="outlined-required"
-                                                label="Required"
-                                                name="candidateFirstName"
-                                                type="text"
-                                                error={Boolean(props.touched.candidateFirstName && props.errors.candidateFirstName)}
-                                                helperText={
-                                                    <ErrorMessage name="candidateFirstName"/> &&
-                                                    props.touched.candidateFirstName &&
-                                                    props.errors.candidateFirstName
-                                                }
-                                                value={props.values.candidateFirstName}
-                                                onBlur={props.handleBlur}
-                                                onChange={props.handleChange}
-                                            />
-                                            {!Boolean(props.touched.candidateFirstName && props.errors.candidateFirstName) ? (
-                                                <div style={{marginTop: "3px"}}></div>
-                                            ) : null}
-                                        </Grid>
-                                        <br/>
-                                        <Grid item>
-                                            <InputLabel>Last Name:</InputLabel>
-                                            <Field
-                                                as={TextField}
-                                                id="name-input-last"
-                                                name="candidateLastName"
-                                                type="text"
-                                                value={props.values.candidateLastName}
-                                                onBlur={props.handleBlur}
-                                                onChange={props.handleChange}
-                                            />
-                                        </Grid>
-                                        <br/>
-                                        <Grid item>
-                                            <InputLabel>Email:</InputLabel>
-                                            <TextField
-                                                id="email-input"
-                                                name="candidateEmail"
-                                                type="text"
-                                                value={props.values.candidateEmail}
-                                                onBlur={props.handleBlur}
-                                                onChange={props.handleChange}
-                                            />
-                                        </Grid>
-                                        <br/>
-                                        <Grid item>
-                                            <InputLabel>Phone Number:</InputLabel>
-                                            <TextField
-                                                id="phone-input"
-                                                name="candidatePhoneNumber"
-                                                type="text"
-                                                value={props.values.candidatePhoneNumber}
-                                                onChange={props.handleChange}
-                                            />
-                                        </Grid>
-                                        <br/>
-                                        <br/>
+                                        Please fill this recommendation form with the candidate info:
+                                    </Typography>
+                                    <Field
+                                        as={StyledTextField}
+                                        required
+                                        label="First Name"
+                                        id="outlined-required"
+                                        name="candidateFirstName"
+                                        type="text"
+                                        error={Boolean(props.touched.candidateFirstName && props.errors.candidateFirstName)}
+                                        helperText={props.touched.candidateFirstName && props.errors.candidateFirstName}
+                                        value={props.values.candidateFirstName}
+                                        onBlur={props.handleBlur}
+                                        onChange={props.handleChange}
+                                    />
 
-                                        <div>
-                                            {questions &&
-                                                questions.length &&
-                                                questions.map((question, key) => (
-                                                    <Grid item key={question.id}>
-                                                        <Card sx={{maxWidth: 400}}>
-                                                            <CardContent>
-                                                                <Typography
-                                                                    gutterBottom
-                                                                    variant="h5"
-                                                                    component="div"
-                                                                >
-                                                                    {question.questionBody}
-                                                                </Typography>
-                                                                {question.type === "Free_Text" && (
-                                                                    <Box
-                                                                        component="form"
+                                    <Field
+                                        as={StyledTextField}
+                                        required
+                                        label="Last Name"
+                                        id="name-input-last"
+                                        name="candidateLastName"
+                                        type="text"
+                                        error={Boolean(props.touched.candidateLastName && props.errors.candidateLastName)}
+                                        helperText={props.touched.candidateLastName && props.errors.candidateLastName}
+                                        value={props.values.candidateLastName}
+                                        onBlur={props.handleBlur}
+                                        onChange={props.handleChange}
+                                    />
+
+                                    <Field
+                                        as={StyledTextField}
+                                        required
+                                        label="Email"
+                                        id="email-input"
+                                        name="candidateEmail"
+                                        type="text"
+                                        error={Boolean(props.touched.candidateEmail && props.errors.candidateEmail)}
+                                        helperText={props.touched.candidateEmail && props.errors.candidateEmail}
+                                        value={props.values.candidateEmail}
+                                        onBlur={props.handleBlur}
+                                        onChange={props.handleChange}
+                                    />
+
+                                    <Field
+                                        as={StyledTextField}
+                                        required
+                                        label="Phone Number"
+                                        id="phone-input"
+                                        name="candidatePhoneNumber"
+                                        type="text"
+                                        error={Boolean(props.touched.candidatePhoneNumber && props.errors.candidatePhoneNumber)}
+                                        value={props.values.candidatePhoneNumber}
+                                        onChange={props.handleChange}
+                                    />
+                                    <StyledTextField
+                                        id="department"
+                                        required
+                                        label="Department: "
+                                        name="department"
+                                        type="department"
+                                        onChange={props.handleChange}
+                                        value={props.values.department}
+                                        sx={{width: 225}}
+                                        select
+                                    >
+                                        <MenuItem value="HR"> HR </MenuItem>
+                                        <MenuItem value="CAD"> CAD </MenuItem>
+                                        <MenuItem value="Design"> Design </MenuItem>
+                                        <MenuItem value="Testing"> Testing </MenuItem>
+                                        <MenuItem value="Technology"> Technology </MenuItem>
+                                        <MenuItem value="Marketing"> Marketing </MenuItem>
+                                    </StyledTextField>
+
+                                    <StyledTextField
+                                        id="jobTitle"
+                                        required
+                                        label="Job title: "
+                                        name="jobType"
+                                        type="jobType"
+                                        onChange={props.handleChange}
+                                        value={props.values.jobType}
+                                        sx={{width: 225}}
+                                        select
+                                    >
+                                        <MenuItem value={"HR"}> Human Resources </MenuItem>
+                                        <MenuItem value={"JUNIOR_ENGINEER"}> Junior Engineer </MenuItem>
+                                        <MenuItem value={"SENIOR_ENGINEER"}> Senior Engineer </MenuItem>
+                                        <MenuItem value={"QUALITY_ASSURANCE"}> Quality Assurance </MenuItem>
+                                    </StyledTextField>
+
+                                    <Typography variant="h4" style={{
+                                        marginTop: "1em",
+                                        fontFamily: "Varela Round",
+                                        fontWeight: "bold",
+                                        color: "#15171c"
+                                    }}
+                                    >
+                                        Please answer the following questions about the candidate:
+                                    </Typography>
+
+                                    {questions &&
+                                        questions.length &&
+                                        questions.map((question, key) => (
+                                            <Paper elevation={3} sx={{width: '75%', padding: '2%'}}>
+                                                <Stack justifyContent="center" alignItems="center" width="100%"
+                                                       spacing={2}>
+                                                    <Typography variant="h5" style={{
+                                                        marginTop: "1em",
+                                                        fontFamily: "Varela Round",
+                                                        color: "#15171c"
+                                                    }}
+                                                    >
+                                                        {question.questionBody}
+                                                    </Typography>
+                                                    {question.type === "Free_Text" && (
+                                                        <StyledTextField
+                                                            label="Write your answer here"
+                                                            multiline
+                                                            fullWidth={true}
+                                                            value={value}
+                                                            name={question.id}
+                                                            onChange={props.handleChange}
+                                                        />
+                                                    )}
+                                                    {question.type === "Single_Choice" && (
+                                                        <StyledTextField
+                                                            id="filled-select-answer"
+                                                            select
+                                                            label="Select"
+                                                            onChange={props.handleChange}
+                                                            variant="outlined"
+                                                            fullWidth={true}
+                                                            name={question.id}
+                                                        >
+                                                            {question.possibleAnswer1 && (
+                                                                <MenuItem
+                                                                    value={question.possibleAnswer1}>
+                                                                    {question.possibleAnswer1}
+                                                                </MenuItem>
+                                                            )}
+                                                            {question.possibleAnswer2 && (
+                                                                <MenuItem
+                                                                    value={question.possibleAnswer2}>
+                                                                    {question.possibleAnswer2}
+                                                                </MenuItem>
+                                                            )}
+                                                            {question.possibleAnswer3 && (
+                                                                <MenuItem
+                                                                    value={question.possibleAnswer3}>
+                                                                    {question.possibleAnswer3}
+                                                                </MenuItem>
+                                                            )}
+                                                            {question.possibleAnswer4 && (
+                                                                <MenuItem
+                                                                    value={question.possibleAnswer4}>
+                                                                    {question.possibleAnswer4}
+                                                                </MenuItem>
+                                                            )}
+                                                        </StyledTextField>
+                                                    )}
+                                                    {question.type === "Multiple_Choice" && (
+                                                        <Box onChange={props.handleChange}>
+                                                            <FormControlLabel
+                                                                label={question.possibleAnswer1}
+                                                                control={
+                                                                    <Checkbox
                                                                         sx={{
-                                                                            "& .MuiTextField-root": {
-                                                                                m: 1,
-                                                                                width: "40ch",
+                                                                            color: '#632ce4',
+                                                                            '&.Mui-checked': {
+                                                                                color: '#632ce4',
                                                                             },
                                                                         }}
-                                                                        noValidate
-                                                                        autoComplete="off"
-                                                                    >
-                                                                        <TextField
-                                                                            id="filled-multiline-flexible"
-                                                                            label="Write your answer below"
-                                                                            value={value}
-                                                                            name={question.id}
-                                                                            onChange={props.handleChange}
-                                                                            variant="filled"
-                                                                        />
-                                                                    </Box>
-                                                                )}
-                                                                {question.type === "Single_Choice" && (
-                                                                    <TextField
-                                                                        id="filled-select-answer"
-                                                                        select
-                                                                        label="Select"
+                                                                        checked={value}
                                                                         onChange={props.handleChange}
-                                                                        variant="filled"
-                                                                        fullWidth={true}
                                                                         name={question.id}
-                                                                    >
-                                                                        {question.possibleAnswer1 && (
-                                                                            <MenuItem value={question.possibleAnswer1}>
-                                                                                {question.possibleAnswer1}
-                                                                            </MenuItem>
-                                                                        )}
-                                                                        {question.possibleAnswer2 && (
-                                                                            <MenuItem value={question.possibleAnswer2}>
-                                                                                {question.possibleAnswer2}
-                                                                            </MenuItem>
-                                                                        )}
-                                                                        {question.possibleAnswer3 && (
-                                                                            <MenuItem value={question.possibleAnswer3}>
-                                                                                {question.possibleAnswer3}
-                                                                            </MenuItem>
-                                                                        )}
-                                                                        {question.possibleAnswer4 && (
-                                                                            <MenuItem value={question.possibleAnswer4}>
-                                                                                {question.possibleAnswer4}
-                                                                            </MenuItem>
-                                                                        )}
-                                                                    </TextField>
-                                                                )}
-                                                                {question.type === "Multiple_Choice" && (
-                                                                    <Box onChange={props.handleChange}>
-                                                                        <FormControlLabel
-                                                                            label={question.possibleAnswer1}
-                                                                            control={
-                                                                                <Checkbox
-                                                                                    checked={value}
-                                                                                    onChange={props.handleChange}
-                                                                                    name={question.id}
-                                                                                    inputProps={{
-                                                                                        possibleAnswer1:
-                                                                                        question.possibleAnswer1,
-                                                                                    }}
-                                                                                    value={question.possibleAnswer1}
-                                                                                />
-                                                                            }
-                                                                        />
-                                                                        <FormControlLabel
-                                                                            label={question.possibleAnswer2}
-                                                                            control={
-                                                                                <Checkbox
-                                                                                    checked={value}
-                                                                                    name={question.id}
-                                                                                    onChange={props.handleChange}
-                                                                                    inputProps={{
-                                                                                        possibleAnswer2:
-                                                                                        question.possibleAnswer2,
-                                                                                    }}
-                                                                                    value={question.possibleAnswer2}
-                                                                                />
-                                                                            }
-                                                                        />
-                                                                        <FormControlLabel
-                                                                            label={question.possibleAnswer3}
-                                                                            control={
-                                                                                <Checkbox
-                                                                                    checked={value}
-                                                                                    name={question.id}
-                                                                                    onChange={props.handleChange}
-                                                                                    inputProps={{
-                                                                                        possibleAnswer3:
-                                                                                        question.possibleAnswer1,
-                                                                                    }}
-                                                                                    value={question.possibleAnswer1}
-                                                                                />
-                                                                            }
-                                                                        />
-                                                                        <FormControlLabel
-                                                                            label={question.possibleAnswer1}
-                                                                            control={
-                                                                                <Checkbox
-                                                                                    checked={value}
-                                                                                    name={question.id}
-                                                                                    onChange={props.handleChange}
-                                                                                    inputProps={{
-                                                                                        possibleAnswer1:
-                                                                                        question.possibleAnswer1,
-                                                                                    }}
-                                                                                    value={question.possibleAnswer1}
-                                                                                />
-                                                                            }
-                                                                        />
-                                                                    </Box>
-                                                                )}
-                                                            </CardContent>
-                                                        </Card>
-                                                        <br/>
-                                                    </Grid>
-                                                ))}
-                                        </div>
+                                                                        inputProps={{
+                                                                            possibleAnswer1:
+                                                                            question.possibleAnswer1,
+                                                                        }}
+                                                                        value={question.possibleAnswer1}
+                                                                    />
+                                                                }
+                                                            />
+                                                            <FormControlLabel
+                                                                label={question.possibleAnswer2}
+                                                                control={
+                                                                    <Checkbox
+                                                                        sx={{
+                                                                            color: '#632ce4',
+                                                                            '&.Mui-checked': {
+                                                                                color: '#632ce4',
+                                                                            },
+                                                                        }}
+                                                                        checked={value}
+                                                                        name={question.id}
+                                                                        onChange={props.handleChange}
+                                                                        inputProps={{
+                                                                            possibleAnswer2:
+                                                                            question.possibleAnswer2,
+                                                                        }}
+                                                                        value={question.possibleAnswer2}
+                                                                    />
+                                                                }
+                                                            />
+                                                            <FormControlLabel
+                                                                label={question.possibleAnswer3}
+                                                                control={
+                                                                    <Checkbox
+                                                                        sx={{
+                                                                            color: '#632ce4',
+                                                                            '&.Mui-checked': {
+                                                                                color: '#632ce4',
+                                                                            },
+                                                                        }}
+                                                                        checked={value}
+                                                                        name={question.id}
+                                                                        onChange={props.handleChange}
+                                                                        inputProps={{
+                                                                            possibleAnswer3:
+                                                                            question.possibleAnswer1,
+                                                                        }}
+                                                                        value={question.possibleAnswer1}
+                                                                    />
+                                                                }
+                                                            />
+                                                            <FormControlLabel
+                                                                label={question.possibleAnswer4}
+                                                                control={
+                                                                    <Checkbox
+                                                                        sx={{
+                                                                            color: '#632ce4',
+                                                                            '&.Mui-checked': {
+                                                                                color: '#632ce4',
+                                                                            },
+                                                                        }}
+                                                                        checked={value}
+                                                                        name={question.id}
+                                                                        onChange={props.handleChange}
+                                                                        inputProps={{
+                                                                            possibleAnswer4:
+                                                                            question.possibleAnswer4,
+                                                                        }}
+                                                                        value={question.possibleAnswer4}
+                                                                    />
+                                                                }
+                                                            />
+                                                        </Box>
+                                                    )}</Stack>
 
-                                        <br/>
-                                        <Button
-                                            style={{
-                                                borderRadius: 35,
-                                                padding: "18px 36px",
-                                                fontSize: "18px",
-                                                color: "black",
-                                                borderWidth: 4,
-                                            }}
-                                            variant="outlined"
-                                            sx={{backgroundColor: "white", height: 40}}
-                                            component="label"
-                                        >
-                                            Upload CV
-                                            <input
-                                                hidden
-                                                accept=".pdf"
-                                                multiple
-                                                type="file"
-                                                onChange={onFileChange}
-                                            />
-                                        </Button>
-                                        <br/>
-                                        <Button
-                                            style={{
-                                                borderRadius: 35,
-                                                padding: "18px 36px",
-                                                fontSize: "18px",
-                                                color: "black",
-                                                borderWidth: 4,
-                                            }}
-                                            variant="outlined"
-                                            sx={{backgroundColor: "white", height: 40}}
-                                            color="primary"
-                                            type="submit"
-                                            onClick={onSubmitForm}
-                                        >
-                                            Submit
-                                        </Button>
-                                    </Grid>
-                                    <br/>
-                                </Form>
-                            )}
-                        </Formik>
-                    </Box>
-                </Container>{" "}
-            </div>
-            <br/>
-            <div>
-                <Box
-                    m={1}
-                    display="flex"
-                    justifyContent="flex-end"
-                    alignItems="flex-end"
-                >
-                    <Button
-                        style={{
-                            borderRadius: 35,
-                            padding: "18px 36px",
-                            fontSize: "18px",
-                            color: "black",
-                            borderWidth: 4,
-                        }}
-                        variant="outlined"
-                        sx={{backgroundColor: "white", height: 40}}
-                        onClick={() => navigate(-1)}
-                    >
-                        Go back
-                    </Button>
+                                            </Paper>
+
+                                        ))}
+
+                                    <StyledButton component="label">
+                                        Upload CV for candidate
+                                        <input
+                                            hidden
+                                            accept=".pdf"
+                                            multiple
+                                            type="file"
+                                            onChange={onFileChange}
+                                        />
+                                    </StyledButton>
+                                    {fileSelected &&
+                                        <Alert severity="success">
+                                            The file {selectedFile.name} has been selected and will be uploaded on
+                                            submit
+                                        </Alert>
+                                    }
+                                    <StyledButton type='submit' onClick={onSubmitForm}>
+                                        Submit
+                                    </StyledButton>
+                                </Stack>
+                            </Form>
+                        )}
+                    </Formik>
                 </Box>
-            </div>
+            </ContentContainer>
             <Footer/>
         </div>
     );

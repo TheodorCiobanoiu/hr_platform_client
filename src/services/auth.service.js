@@ -18,7 +18,8 @@ class AuthService {
                     await localStorage.setItem("user", JSON.stringify(response.data));
                     console.log("User added to local storage");
                 }
-                UsersService.getUserById(response.data.id);
+                await UsersService.getUserById(response.data.id);
+                console.log("Full user added to local storage");
                 return response.data;
             });
     }
@@ -28,14 +29,20 @@ class AuthService {
         localStorage.removeItem("full-user");
     }
 
-    register(firstName, lastName, username, phone, email, password) {
+    register(firstName, lastName, username, phone, email, password, department, jobType) {
+        const userDetailsDTO = {
+            department: department,
+            jobType: jobType
+        }
+        console.log(userDetailsDTO);
         return axios.post(API_URL + "signup", {
             firstName,
             lastName,
             username,
             phone,
             email,
-            password
+            password,
+            userDetailsDTO
         }, {headers: authHeader()});
     }
 

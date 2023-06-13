@@ -147,9 +147,9 @@ export const ModalRequest = (prop) => {
                     {getCardType()}
                 </Grid>
                 <Grid item xs={12} container justifyContent="center">
-                    {(request.fileId === null ||
+                    {((request.fileId === null ||
                         ((user.roles[0] === 'ROLE_HR' || user.roles[0] === 'ROLE_ADMIN')
-                            && pathName === "/request/all")) && (
+                            && pathName === "/request/all")) && request.status !== 'Accepted') && (
                         <StyledButton component="label">
                             Upload Signed Request
                             <input
@@ -173,7 +173,7 @@ export const ModalRequest = (prop) => {
                         </Alert>
                     </Grid>}
                 <Grid item xs={12} container justifyContent="center">
-                    {((pathName === '/request/all') && (user.roles[0] === 'ROLE_HR' || user.roles[0] === 'ROLE_ADMIN')) &&
+                    {((pathName === '/request/all') && (user.roles[0] === 'ROLE_HR' || user.roles[0] === 'ROLE_ADMIN') && (request.status !== 'Accepted')) &&
                         <StyledTextField
                             select
                             label="Change status"
@@ -198,9 +198,10 @@ export const ModalRequest = (prop) => {
                         </StyledTextField>}
                 </Grid>
                 <Grid item xs={12} container justifyContent="center">
-                    <StyledButton onClick={handleSubmit}>
-                        Submit Changes
-                    </StyledButton>
+                    {request.status !== "Accepted" &&
+                        <StyledButton onClick={handleSubmit}>
+                            Submit Changes
+                        </StyledButton>}
                 </Grid>
 
             </Grid>

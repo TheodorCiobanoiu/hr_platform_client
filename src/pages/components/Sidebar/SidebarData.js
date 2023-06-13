@@ -42,6 +42,29 @@ export const SidebarData = [
         ]
     },
     {
+        title: 'Timesheet',
+        path: '',
+        icon: <IoIcons.IoIosPaper/>,
+        iconClosed: <RiIcons.RiArrowDownSFill/>,
+        iconOpened: <RiIcons.RiArrowUpSFill/>,
+        alwaysVisible: true,
+        subNav: [
+            {
+                title: 'See timesheet data',
+                path: '/timesheet/data',
+                icon: <FaIcons.FaPenSquare/>,
+                visibility: "ROLE_HR",
+                alwaysVisible: false
+            },
+            {
+                title: 'Fill timesheet data',
+                path: '/timesheet/user',
+                icon: <FaIcons.FaPenSquare/>,
+                alwaysVisible: true
+            },
+        ]
+    },
+    {
         title: 'Recommend',
         path: '',
         icon: <FaIcons.FaUser/>,
@@ -63,7 +86,7 @@ export const SidebarData = [
             },
             {
                 title: 'See your recommendations',
-                path: '/recommendations/all',
+                path: '/recommendations/user',
                 icon: <FaIcons.FaUser/>,
                 alwaysVisible: true
             }
@@ -85,12 +108,12 @@ export const SidebarData = [
 
                 visibility: "ROLE_ADMIN"
             },
-            {
-                title: 'Delete account',
-                path: '/admin/delete-account',
-                icon: <FaIcons.FaUserSlash/>,
-                visibility: "ROLE_ADMIN"
-            },
+            // {
+            //     title: 'Delete account',
+            //     path: '/admin/delete-account',
+            //     icon: <FaIcons.FaUserSlash/>,
+            //     visibility: "ROLE_ADMIN"
+            // },
             {
                 title: 'See all users',
                 path: '/admin/users-all',

@@ -1,13 +1,12 @@
 import React, {useState} from "react";
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
 import {useNavigate} from "react-router-dom";
 import Footer from "./components/footer";
 import AuthService from "../services/auth.service";
 import {Sidebar} from "./components/Sidebar/Sidebar";
+import {ContentContainer, StyledButton, StyledTextField} from "./components/StyledComponents";
+import MenuItem from "@mui/material/MenuItem";
 
 
 const defaultValues = {
@@ -17,9 +16,13 @@ const defaultValues = {
     email: "",
     phone: "",
     password: "",
+    department: "",
+    jobType: ""
 };
 const AddAccount = () => {
     const [formValues, setFormValues] = useState(defaultValues);
+    const navigate = useNavigate();
+
     const handleInputChange = (e) => {
         const {name, value} = e.target;
         setFormValues({
@@ -37,47 +40,33 @@ const AddAccount = () => {
             formValues.username,
             formValues.phone,
             formValues.email,
-            formValues.password
+            formValues.password,
+            formValues.department,
+            formValues.jobType
         )
             .then((response) => {
                 apiResponse = response.data;
+                navigate("/overview", {replace: true});
             })
             .catch((error) => console.log(error));
-        console.log("After register request server responded with: ");
-        console.log(apiResponse);
-        alert("Data Inserted");
-        //console.log(formValues);
     };
-
-    const navigate = useNavigate();
 
     return (
         <div>
             <Sidebar/>
-            <br/>
             <div>
-                <Container
-                    maxWidth="sm"
-                    fixed
-                    sx={{
-                        width: "90%",
-                        color: "white",
-                        boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
-                        position: "relative",
-                        borderRadius: 10,
-                    }}
-                >
+                <ContentContainer>
                     <Box sx={{bgcolor: "#ffffff", borderRadius: 10}}>
-                        <br/>
                         <form onSubmit={(e) => handleSubmit(e)}>
                             <Grid
                                 container
+                                spacing={2}
                                 alignItems="center"
                                 justifyContent="center"
                                 direction="column"
                             >
                                 <Grid item>
-                                    <TextField
+                                    <StyledTextField
                                         id="firstName"
                                         name="firstName"
                                         label="First Name: "
@@ -87,9 +76,8 @@ const AddAccount = () => {
                                         required
                                     />
                                 </Grid>
-                                <br/>
                                 <Grid item>
-                                    <TextField
+                                    <StyledTextField
                                         id="lastName"
                                         name="lastName"
                                         label="Last name: "
@@ -99,9 +87,8 @@ const AddAccount = () => {
                                         required
                                     />
                                 </Grid>
-                                <br/>
                                 <Grid item>
-                                    <TextField
+                                    <StyledTextField
                                         id="username"
                                         name="username"
                                         label="Username: "
@@ -111,9 +98,8 @@ const AddAccount = () => {
                                         required
                                     />
                                 </Grid>
-                                <br/>
                                 <Grid item>
-                                    <TextField
+                                    <StyledTextField
                                         id="email"
                                         name="email"
                                         label="Email"
@@ -123,9 +109,8 @@ const AddAccount = () => {
                                         required
                                     />
                                 </Grid>
-                                <br/>
                                 <Grid item>
-                                    <TextField
+                                    <StyledTextField
                                         id="phone"
                                         name="phone"
                                         label="Phone"
@@ -135,9 +120,8 @@ const AddAccount = () => {
                                         required
                                     />
                                 </Grid>
-                                <br/>
                                 <Grid item>
-                                    <TextField
+                                    <StyledTextField
                                         id="password"
                                         required
                                         label="Password: "
@@ -147,56 +131,53 @@ const AddAccount = () => {
                                         onChange={(e) => handleInputChange(e)}
                                     />
                                 </Grid>
+                                <Grid item>
+                                    <StyledTextField
+                                        id="department"
+                                        required
+                                        label="Department: "
+                                        name="department"
+                                        type="department"
+                                        onChange={(e) => handleInputChange(e)}
+                                        value={formValues.department}
+                                        sx={{width: 225}}
+                                        select
+                                    >
+                                        <MenuItem value={"HR"}> HR </MenuItem>
+                                        <MenuItem value={"CAD"}> CAD </MenuItem>
+                                        <MenuItem value={"Design"}> Design </MenuItem>
+                                        <MenuItem value={"Testing"}> Testing </MenuItem>
+                                        <MenuItem value={"Technology"}> Technology </MenuItem>
+                                        <MenuItem value={"Marketing"}> Marketing </MenuItem>
+                                    </StyledTextField>
+                                    <StyledTextField
+                                        id="jobType"
+                                        required
+                                        label="Job title: "
+                                        name="jobType"
+                                        type="jobType"
+                                        onChange={(e) => handleInputChange(e)}
+                                        value={formValues.jobType}
+                                        sx={{width: 225}}
+                                        select
+                                    >
+                                        <MenuItem value={"HR"}> Human Resources </MenuItem>
+                                        <MenuItem value={"JUNIOR_ENGINEER"}> Junior Engineer </MenuItem>
+                                        <MenuItem value={"SENIOR_ENGINEER"}> Senior Engineer </MenuItem>
+                                        <MenuItem value={"QUALITY_ASSURANCE"}> Quality Assurance </MenuItem>
+                                    </StyledTextField>
+                                </Grid>
                                 <br/>
-                                <Button
-                                    style={{
-                                        borderRadius: 35,
-                                        padding: "18px 36px",
-                                        fontSize: "18px",
-                                        color: "black",
-                                        borderWidth: 4,
-                                    }}
-                                    variant="outlined"
-                                    sx={{backgroundColor: "white", height: 40}}
-                                    type="submit"
-                                    href="/admin"
-                                    onClick={handleSubmit}
-                                >
-                                    Create
-                                </Button>
+                                <StyledButton onClick={handleSubmit}>
+                                    REGISTER USER
+                                </StyledButton>
                             </Grid>
                             <br/>
                         </form>
                     </Box>
-                </Container>{" "}
-            </div>
-            <br/>
-            <div>
-                <Box
-                    m={1}
-                    display="flex"
-                    justifyContent="flex-end"
-                    alignItems="flex-end"
-                >
-                    <Button
-                        style={{
-                            borderRadius: 35,
-                            padding: "18px 36px",
-                            fontSize: "18px",
-                            color: "black",
-                            borderWidth: 4,
-                        }}
-                        variant="outlined"
-                        sx={{backgroundColor: "white", height: 40}}
-                        onClick={() => navigate(-1)}
-                    >
-                        Go back
-                    </Button>
-                </Box>
-            </div>
-            <Box sx={{mt: 13, mb: 0}}>
+                </ContentContainer>
                 <Footer/>
-            </Box>
+            </div>
         </div>
     );
 };
