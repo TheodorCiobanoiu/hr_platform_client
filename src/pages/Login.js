@@ -77,14 +77,14 @@ const Login = () => {
     const [passwordError, setPasswordError] = React.useState(false);
     const [loginError, setLoginError] = React.useState(false);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         setMessage("");
         setUsernameError(false);
         setPasswordError(false);
         setLoginError(false);
 
-        AuthService.login(username, password).then(
+        await AuthService.login(username, password).then(
             () => {
                 navigate("/overview");
                 window.location.reload();

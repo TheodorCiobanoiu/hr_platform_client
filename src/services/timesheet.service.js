@@ -26,9 +26,10 @@ class TimesheetService {
     }
 
     getDataForGivenMonth(month) {
-        return axios.get(API_URL + "timesheet/monthly-data/" + month, {headers: authHeader()}).then((response) => {
-            return response.data;
-        })
+        return axios.get(API_URL + "timesheet/monthly-data/" + month, {headers: authHeader()})
+            .then((response) => {
+                return response.data;
+            })
     }
 
 }

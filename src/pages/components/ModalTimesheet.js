@@ -90,7 +90,8 @@ export const ModalTimesheet = (prop) => {
                     color: "#15171c"
                 }}
                 >
-                    Request #{timesheet.id} for the month {format(new Date(2000, timesheet.month, 1), 'MMMM')}
+                    Timesheet completed by {user.firstName} {user.lastName} for the
+                    month {format(new Date(2000, timesheet.month, 1), 'MMMM')}
                 </Typography>
                 <StyledCard sx={{width: "100%", maxWidth: 1000}}>
                     <Grid container>

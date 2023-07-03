@@ -115,7 +115,7 @@ export default function ModalRecommendation(props) {
                     Download CV
                 </StyledButton>
 
-                {props.pathName !== "/yourRecommendation" && (
+                {props.pathName !== "/recommendations/user" && (
                     <StyledTextField
                         sx={{width: 400, marginBottom: 50}}
                         select

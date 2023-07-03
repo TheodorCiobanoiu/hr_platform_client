@@ -108,12 +108,6 @@ export const SidebarData = [
 
                 visibility: "ROLE_ADMIN"
             },
-            // {
-            //     title: 'Delete account',
-            //     path: '/admin/delete-account',
-            //     icon: <FaIcons.FaUserSlash/>,
-            //     visibility: "ROLE_ADMIN"
-            // },
             {
                 title: 'See all users',
                 path: '/admin/users-all',

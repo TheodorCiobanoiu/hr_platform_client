@@ -65,6 +65,7 @@ export const Overview = () => {
 
     const getData = async () => {
         const data = await AdminService.getOverviewMessage(currentUser.userID);
+        data.timeTillNextVacationDay = (data.timeTillNextVacationDay === null ? "There are no messages for you at this moment" : data.timeTillNextVacationDay);
         setOverviewData(data);
         console.log(data);
     }

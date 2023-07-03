@@ -19,6 +19,7 @@ const autoCompleteOptions = [
     {label: "Select request type...", requestType: ""},
     {label: "Cerere Concediu Odihna", requestType: "CERERE_CONCEDIU_ODIHNA"},
     {label: "Cerere Concediu Neplatit", requestType: "CERERE_CONCEDIU_ODIHNA"},
+    {label: "Cerere Demisie", requestType: "CERERE_CONCEDIU_ODIHNA"},
 ];
 
 export const CreateRequest = () => {
@@ -83,9 +84,8 @@ export const CreateRequest = () => {
                     <Grid item xs={2}/>
                     {autocompleteValue.requestType === "CERERE_CONCEDIU_ODIHNA" &&
                         (<>
-                                <Grid item xs={5}/>
-                                <Grid item xs={2}>
-                                    <FormGroup>
+                                <Grid item xs={12}>
+                                    <FormGroup sx={{justifyContent: 'center', alignItems: 'center'}}>
                                         <FormControlLabel
                                             control={
                                                 <Checkbox
@@ -96,7 +96,6 @@ export const CreateRequest = () => {
                                             label={'Concediu de o zi'}/>
                                     </FormGroup>
                                 </Grid>
-                                <Grid item xs={4}/>
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <Grid item xs={4}/>
                                     <Grid item xs={2}>

@@ -27,7 +27,7 @@ export const Timesheet = () => {
 
     const fetchData = async () => {
         await TimesheetService.getUserTimesheetByMonth(month, user.userID).then((response) => {
-            console.log(response);
+            console.log(response.data);
             const dates = response.data.workDates;
             const fnsDates = [];
             dates.forEach((date) => {
@@ -41,6 +41,7 @@ export const Timesheet = () => {
         const getHolidays = await AdminService.getAllHolidays();
         setHolidays(getHolidays);
         const getVacationDays = await VacationsService.getAllVacationsForUser(user.userID);
+        console.log(getVacationDays);
         setVacationDays(getVacationDays);
     };
 
